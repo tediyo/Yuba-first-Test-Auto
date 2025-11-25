@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.example.automation.runners.CucumberTestRunnerTest
+-------------------------------------------------------------------------------
+Tests run: 14, Failures: 0, Errors: 0, Skipped: 9, Time elapsed: 59.81 s -- in com.example.automation.runners.CucumberTestRunnerTest

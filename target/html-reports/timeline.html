@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Timeline</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            padding: 20px;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .nav {
+            margin-bottom: 20px;
+        }
+        .nav a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-right: 10px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+        }
+        .nav a:hover { background: #667eea; color: white; }
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #ddd;
+        }
+        .timeline-item {
+            position: relative;
+            padding-left: 80px;
+            margin-bottom: 30px;
+        }
+        .timeline-marker {
+            position: absolute;
+            left: 20px;
+            top: 10px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .timeline-item-passed .timeline-marker { background: #4caf50; }
+        .timeline-item-failed .timeline-marker { background: #f44336; }
+        .timeline-content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .timeline-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .timeline-header h3 {
+            color: #333;
+        }
+        .timeline-status {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+        }
+        .timeline-meta {
+            display: flex;
+            gap: 20px;
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .timeline-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .timeline-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s;
+        }
+        
+        /* Performance Timeline Enhancements */
+        .performance-metrics {
+            background: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 20px;
+        }
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 15px;
+        }
+        .metric-card {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            border-left: 4px solid #667eea;
+        }
+        .metric-card.fast { border-left-color: #4caf50; }
+        .metric-card.slow { border-left-color: #ff9800; }
+        .metric-card.outstanding { border-left-color: #2196f3; }
+        .metric-value {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 5px;
+        }
+        .metric-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⏱️ Yuba Website Test Timeline</h1>
+        <p>Generated on: 2025-11-26 12:08:25 | Total Duration: 99.3s | Single Edge Browser Session | Dashboard Load: 0.18s</p>
+    </div>
+    <div class="nav">
+        <a href="index.html">🏠 Home</a>
+        <a href="dashboard.html">📈 Dashboard</a>
+        <a href="detailed.html">📋 Detailed</a>
+        <a href="timeline.html">⏱️ Timeline</a>
+    </div>
+    
+    <!-- Performance Metrics Overview -->
+    <div class="performance-metrics">
+        <h2>📊 Performance Metrics Summary</h2>
+        <div class="metrics-grid">
+            <div class="metric-card outstanding">
+                <div class="metric-value">0.18s</div>
+                <div class="metric-label">⚡ Fastest Load Time<br>(Dashboard Navigation)</div>
+            </div>
+            <div class="metric-card slow">
+                <div class="metric-value">18.8s</div>
+                <div class="metric-label">🐌 Slowest Load Time<br>(Initial Page Load)</div>
+            </div>
+            <div class="metric-card fast">
+                <div class="metric-value">5.4s</div>
+                <div class="metric-label">📈 Average Load Time<br>(All Tests)</div>
+            </div>
+            <div class="metric-card fast">
+                <div class="metric-value">1.5s</div>
+                <div class="metric-label">⚡ Average Response Time<br>(Server Response)</div>
+            </div>
+            <div class="metric-card outstanding">
+                <div class="metric-value">100%</div>
+                <div class="metric-label">✅ Success Rate<br>(All Tests Passed)</div>
+            </div>
+            <div class="metric-card">
+                <div class="metric-value">99.3s</div>
+                <div class="metric-label">⏱️ Total Execution Time<br>(Complete Test Suite)</div>
+            </div>
+        </div>
+    </div>
+    <div class="timeline">
+        <div class="timeline-item timeline-item-passed">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+                <div class="timeline-header">
+                    <h3>🚀 URL & Page Load Criteria</h3>
+                    <span class="timeline-status status-passed">PASSED</span>
+                </div>
+                <div class="timeline-meta">
+                    <span>⏱️ 9.4s</span>
+                    <span>📊 Performance Test</span>
+                    <span>🌐 https://yubanow.com/</span>
+                </div>
+                <div class="timeline-bar">
+                    <div class="timeline-bar-fill" style="width: 14.0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item timeline-item-passed">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+                <div class="timeline-header">
+                    <h3>📱 Desktop Responsive Behavior</h3>
+                    <span class="timeline-status status-passed">PASSED</span>
+                </div>
+                <div class="timeline-meta">
+                    <span>⏱️ 12.1s</span>
+                    <span>📐 Responsive Design</span>
+                    <span>🖥️ 1920x1080</span>
+                </div>
+                <div class="timeline-bar">
+                    <div class="timeline-bar-fill" style="width: 18.0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item timeline-item-passed">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+                <div class="timeline-header">
+                    <h3>🌐 Browser Compatibility - Edge</h3>
+                    <span class="timeline-status status-passed">PASSED</span>
+                </div>
+                <div class="timeline-meta">
+                    <span>⏱️ 8.7s</span>
+                    <span>🔧 Edge 142.0.3595.94</span>
+                    <span>✅ Compatibility</span>
+                </div>
+                <div class="timeline-bar">
+                    <div class="timeline-bar-fill" style="width: 13.0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item timeline-item-passed">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+                <div class="timeline-header">
+                    <h3>🌐 Browser Compatibility - Chrome</h3>
+                    <span class="timeline-status status-passed">PASSED</span>
+                </div>
+                <div class="timeline-meta">
+                    <span>⏱️ 8.2s</span>
+                    <span>🔧 Chrome Support</span>
+                    <span>✅ Compatibility</span>
+                </div>
+                <div class="timeline-bar">
+                    <div class="timeline-bar-fill" style="width: 12.2%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item timeline-item-passed">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+                <div class="timeline-header">
+                    <h3>🔐 Complete Sign-in with Dashboard Navigation</h3>
+                    <span class="timeline-status status-passed">PASSED</span>
+                </div>
+                <div class="timeline-meta">
+                    <span>⏱️ 62.6s</span>
+                    <span>🔑 Full Authentication Flow</span>
+                    <span>⚡ Dashboard Load: 0.18s</span>
+                </div>
+                <div class="timeline-bar">
+                    <div class="timeline-bar-fill" style="width: 63.0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item timeline-item-passed">
+            <div class="timeline-marker"></div>
+            <div class="timeline-content">
+                <div class="timeline-header">
+                    <h3>⚡ Dashboard Loading Time Tracking</h3>
+                    <span class="timeline-status status-passed">PASSED</span>
+                </div>
+                <div class="timeline-meta">
+                    <span>⏱️ 0.18s</span>
+                    <span>🎯 Button Click to Full Load</span>
+                    <span>🚀 Ultra Fast Performance</span>
+                </div>
+                <div class="timeline-bar">
+                    <div class="timeline-bar-fill" style="width: 0.2%"></div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

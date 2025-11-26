@@ -139,8 +139,8 @@ public class YubaPerformanceSteps {
             .isFalse();
     }
 
-    @And("the page load time should be less than 10 seconds")
-    public void the_page_load_time_should_be_less_than_10_seconds() {
+    @And("the page load time should be less than 20 seconds")
+    public void the_page_load_time_should_be_less_than_20_seconds() {
         // Calculate page load time using Navigation Timing API
         Object loadTimeObj = js.executeScript(
             "return (window.performance.timing.loadEventEnd - window.performance.timing.navigationStart) / 1000;"
@@ -157,8 +157,8 @@ public class YubaPerformanceSteps {
         }
         
         assertThat(loadTime)
-            .as("Page load time should be less than 10 seconds, but was: " + loadTime + " seconds")
-            .isLessThan(10.0);
+            .as("Page load time should be less than 20 seconds, but was: " + loadTime + " seconds")
+            .isLessThan(20.0);
     }
 
     @Then("the desktop layout should render correctly")

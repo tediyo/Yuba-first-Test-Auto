@@ -1,7 +1,0 @@
-com\example\automation\support\DriverFactory.class
-com\example\automation\hooks\Hooks.class
-com\example\automation\steps\YubaSignInSteps.class
-com\example\automation\steps\WebFormSteps.class
-com\example\automation\steps\YubaPerformanceSteps.class
-com\example\automation\runners\CucumberTestRunnerTest.class
-com\example\automation\steps\YubaWebsiteSteps.class

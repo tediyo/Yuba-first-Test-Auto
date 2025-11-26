@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Reports - Index</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%%, #764ba2 100%%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 50px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .report-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+        .card h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+        }
+        .card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        .card-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+        .badge-dashboard { background: #e3f2fd; color: #1976d2; }
+        .badge-detailed { background: #f3e5f5; color: #7b1fa2; }
+        .badge-timeline { background: #e8f5e9; color: #388e3c; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Yuba Website Test Reports</h1>
+        <div class="report-cards">
+            <a href="dashboard.html" class="card">
+                <div class="card-icon">📈</div>
+                <h2>Dashboard View</h2>
+                <p>Yuba website testing overview: Performance, Compatibility, Sign-in flow with summary statistics and pass rates.</p>
+                <span class="badge badge-dashboard">Summary & Stats</span>
+            </a>
+            <a href="detailed.html" class="card">
+                <div class="card-icon">📋</div>
+                <h2>Detailed View</h2>
+                <p>Detailed Yuba test execution: URL validation, page load times, responsive design, and complete sign-in process.</p>
+                <span class="badge badge-detailed">Full Details</span>
+            </a>
+            <a href="timeline.html" class="card">
+                <div class="card-icon">⏱️</div>
+                <h2>Timeline View</h2>
+<parameter name="new_string">                <p>Timeline of Yuba website tests: Performance validation, compatibility checks, and user authentication flow.</p>
+                <span class="badge badge-timeline">Time Analysis</span>
+            </a>
+        </div>
+    </div>
+</body>
+</html>

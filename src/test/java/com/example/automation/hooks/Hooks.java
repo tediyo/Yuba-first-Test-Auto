@@ -45,6 +45,13 @@ public class Hooks {
 
     @AfterAll
     public static void tearDownOnce() {
+        // Generate custom HTML report
+        try {
+            com.example.automation.reporting.CustomHtmlReportGenerator.generateCustomReport();
+        } catch (Exception e) {
+            System.err.println("Failed to generate custom report: " + e.getMessage());
+        }
+        
         // Quit driver only once at the end of all scenarios
         if (driverInitialized) {
             DriverFactory.quitDriver();

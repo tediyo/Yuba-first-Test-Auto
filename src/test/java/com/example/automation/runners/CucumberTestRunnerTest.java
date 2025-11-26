@@ -9,7 +9,7 @@ import org.junit.platform.suite.api.Suite;
 @Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
-@ConfigurationParameter(key = Constants.PLUGIN_PROPERTY_NAME, value = "pretty, summary")
+@ConfigurationParameter(key = Constants.PLUGIN_PROPERTY_NAME, value = "pretty, summary, html:target/cucumber-reports/html-report, json:target/cucumber-reports/cucumber.json")
 @ConfigurationParameter(key = Constants.FILTER_TAGS_PROPERTY_NAME, value = "@signin or @performance or @compatibility")
 public class CucumberTestRunnerTest {
     // JUnit Platform Suite runner for Cucumber BDD tests

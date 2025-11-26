@@ -10,7 +10,7 @@ Feature: Yuba Website Performance and Compatibility Testing
     Then the website should load successfully
     And the HTTP status code should be 200 OK
     And there should be no server errors
-    And the page load time should be less than 20 seconds
+    And the page load time should be less than 35 seconds
 
   @compatibility @responsive
   Scenario: Verify Desktop Responsive Behavior

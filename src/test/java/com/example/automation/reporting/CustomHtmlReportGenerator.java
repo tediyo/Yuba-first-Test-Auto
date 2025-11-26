@@ -7,11 +7,13 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 public class CustomHtmlReportGenerator {
 
     public static void generateCustomReport() {
         try {
+            // Generate custom report
             Path targetDir = Paths.get("target/custom-reports");
             Files.createDirectories(targetDir);
             
@@ -23,8 +25,87 @@ public class CustomHtmlReportGenerator {
             
             System.out.println("Custom HTML report generated: target/custom-reports/yuba-test-report.html");
             
+            // Also update the performance HTML reports with real data
+            updatePerformanceReports();
+            
         } catch (IOException e) {
             System.err.println("Error generating custom report: " + e.getMessage());
+        }
+    }
+    
+    private static void updatePerformanceReports() {
+        try {
+            // Update the HTML reports with current timestamp and real data
+            Path htmlReportsDir = Paths.get("target/html-reports");
+            if (Files.exists(htmlReportsDir)) {
+                updateDashboardReport();
+                updateDetailedReport();
+                updateTimelineReport();
+                System.out.println("Performance HTML reports updated with latest test data");
+            }
+        } catch (Exception e) {
+            System.err.println("Error updating performance reports: " + e.getMessage());
+        }
+    }
+    
+    private static void updateDashboardReport() throws IOException {
+        Path dashboardPath = Paths.get("target/html-reports/dashboard.html");
+        if (Files.exists(dashboardPath)) {
+            String content = Files.readString(dashboardPath);
+            String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            
+            // Update timestamp
+            content = content.replaceAll("Generated on: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}", 
+                                       "Generated on: " + currentTime);
+            
+            // Update test statistics with real data
+            Map<String, TestResultsCollector.TestResult> results = TestResultsCollector.getAllResults();
+            if (!results.isEmpty()) {
+                int totalTests = TestResultsCollector.getTotalTests();
+                int passedTests = TestResultsCollector.getPassedTests();
+                int failedTests = TestResultsCollector.getFailedTests();
+                double avgDuration = TestResultsCollector.getAverageDuration();
+                
+                // Update statistics
+                content = content.replaceAll("<div class=\"value\">\\d+</div>", 
+                    "<div class=\"value\">" + totalTests + "</div>");
+                content = content.replaceAll("(Passed[^>]*>\\s*<div class=\"value\">)\\d+(</div>)", 
+                    "$1" + passedTests + "$2");
+                content = content.replaceAll("(Failed[^>]*>\\s*<div class=\"value\">)\\d+(</div>)", 
+                    "$1" + failedTests + "$2");
+                content = content.replaceAll("(Avg Duration[^>]*>\\s*<div class=\"value\">)[^<]+(</div>)", 
+                    "$1" + String.format("%.1fs", avgDuration) + "$2");
+            }
+            
+            Files.writeString(dashboardPath, content);
+        }
+    }
+    
+    private static void updateDetailedReport() throws IOException {
+        Path detailedPath = Paths.get("target/html-reports/detailed.html");
+        if (Files.exists(detailedPath)) {
+            String content = Files.readString(detailedPath);
+            String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            
+            // Update timestamp
+            content = content.replaceAll("Generated on: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}", 
+                                       "Generated on: " + currentTime);
+            
+            Files.writeString(detailedPath, content);
+        }
+    }
+    
+    private static void updateTimelineReport() throws IOException {
+        Path timelinePath = Paths.get("target/html-reports/timeline.html");
+        if (Files.exists(timelinePath)) {
+            String content = Files.readString(timelinePath);
+            String currentTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+            
+            // Update timestamp
+            content = content.replaceAll("Generated on: \\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}", 
+                                       "Generated on: " + currentTime);
+            
+            Files.writeString(timelinePath, content);
         }
     }
     

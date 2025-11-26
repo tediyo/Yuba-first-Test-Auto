@@ -1,3 +1,4 @@
+@navigation
 Feature: Yuba Website Navigation and Functionality
   As a user
   I want to navigate and interact with the Yuba website
@@ -6,6 +7,7 @@ Feature: Yuba Website Navigation and Functionality
   Background:
     Given I am on the Yuba homepage
 
+  @navigation
   Scenario: Verify homepage loads with key elements
     Then I should see the page title contains "Yuba"
     And I should see the main heading "A Sounding Board forEarly Stage African Entrepreneurs"

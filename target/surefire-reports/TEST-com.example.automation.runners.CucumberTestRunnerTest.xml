@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.example.automation.runners.CucumberTestRunnerTest" time="137.678" tests="14" errors="0" skipped="9" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.2" name="com.example.automation.runners.CucumberTestRunnerTest" time="194.841" tests="15" errors="0" skipped="14" failures="0">
   <properties>
     <property name="java.specification.version" value="21"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -15,7 +15,7 @@
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="user.country" value="US"/>
     <property name="sun.boot.library.path" value="C:\Program Files\Java\jdk-21.0.8\bin"/>
-    <property name="sun.java.command" value="C:\Users\Thedr\AppData\Local\Temp\surefire17776089429749829101\surefirebooter-20251128160242516_3.jar C:\Users\Thedr\AppData\Local\Temp\surefire17776089429749829101 2025-11-28T16-02-42_312-jvmRun1 surefire-20251128160242516_1tmp surefire_0-20251128160242516_2tmp"/>
+    <property name="sun.java.command" value="C:\Users\Thedr\AppData\Local\Temp\surefire10736431799152925039\surefirebooter-20251209114440262_3.jar C:\Users\Thedr\AppData\Local\Temp\surefire10736431799152925039 2025-12-09T11-44-39_862-jvmRun1 surefire-20251209114440262_1tmp surefire_0-20251209114440262_2tmp"/>
     <property name="jdk.debug" value="release"/>
     <property name="surefire.test.class.path" value="C:\Users\Thedr\Desktop\YUBASE\selenium-bdd\target\test-classes;C:\Users\Thedr\Desktop\YUBASE\selenium-bdd\target\classes;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-java\4.25.0\selenium-java-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-api\4.25.0\selenium-api-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\jspecify\jspecify\1.0.0\jspecify-1.0.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-chrome-driver\4.25.0\selenium-chrome-driver-4.25.0.jar;C:\Users\Thedr\.m2\repository\com\google\auto\service\auto-service-annotations\1.1.1\auto-service-annotations-1.1.1.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-chromium-driver\4.25.0\selenium-chromium-driver-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-json\4.25.0\selenium-json-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-manager\4.25.0\selenium-manager-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v127\4.25.0\selenium-devtools-v127-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v128\4.25.0\selenium-devtools-v128-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v129\4.25.0\selenium-devtools-v129-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-devtools-v85\4.25.0\selenium-devtools-v85-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-edge-driver\4.25.0\selenium-edge-driver-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-firefox-driver\4.25.0\selenium-firefox-driver-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-http\4.25.0\selenium-http-4.25.0.jar;C:\Users\Thedr\.m2\repository\dev\failsafe\failsafe\3.3.2\failsafe-3.3.2.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-ie-driver\4.25.0\selenium-ie-driver-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-remote-driver\4.25.0\selenium-remote-driver-4.25.0.jar;C:\Users\Thedr\.m2\repository\com\google\guava\guava\33.3.0-jre\guava-33.3.0-jre.jar;C:\Users\Thedr\.m2\repository\com\google\guava\failureaccess\1.0.2\failureaccess-1.0.2.jar;C:\Users\Thedr\.m2\repository\com\google\guava\listenablefuture\9999.0-empty-to-avoid-conflict-with-guava\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;C:\Users\Thedr\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\Thedr\.m2\repository\org\checkerframework\checker-qual\3.43.0\checker-qual-3.43.0.jar;C:\Users\Thedr\.m2\repository\com\google\j2objc\j2objc-annotations\3.0.0\j2objc-annotations-3.0.0.jar;C:\Users\Thedr\.m2\repository\io\opentelemetry\semconv\opentelemetry-semconv\1.25.0-alpha\opentelemetry-semconv-1.25.0-alpha.jar;C:\Users\Thedr\.m2\repository\io\opentelemetry\opentelemetry-api\1.42.1\opentelemetry-api-1.42.1.jar;C:\Users\Thedr\.m2\repository\io\opentelemetry\opentelemetry-context\1.42.1\opentelemetry-context-1.42.1.jar;C:\Users\Thedr\.m2\repository\io\opentelemetry\opentelemetry-exporter-logging\1.42.1\opentelemetry-exporter-logging-1.42.1.jar;C:\Users\Thedr\.m2\repository\io\opentelemetry\opentelemetry-sdk-common\1.42.1\opentelemetry-sdk-common-1.42.1.jar;C:\Users\Thedr\.m2\repository\io\opentelemetry\opentelemetry-sdk-extension-autoconfigure-spi\1.42.1\opentelemetry-sdk-extension-autoconfigure-spi-1.42.1.jar;C:\Users\Thedr\.m2\repository\io\opentelemetry\opentelemetry-sdk-extension-autoconfigure\1.42.1\opentelemetry-sdk-extension-autoconfigure-1.42.1.jar;C:\Users\Thedr\.m2\repository\io\opentelemetry\opentelemetry-api-incubator\1.42.1-alpha\opentelemetry-api-incubator-1.42.1-alpha.jar;C:\Users\Thedr\.m2\repository\io\opentelemetry\opentelemetry-sdk-trace\1.42.1\opentelemetry-sdk-trace-1.42.1.jar;C:\Users\Thedr\.m2\repository\io\opentelemetry\opentelemetry-sdk\1.42.1\opentelemetry-sdk-1.42.1.jar;C:\Users\Thedr\.m2\repository\io\opentelemetry\opentelemetry-sdk-metrics\1.42.1\opentelemetry-sdk-metrics-1.42.1.jar;C:\Users\Thedr\.m2\repository\io\opentelemetry\opentelemetry-sdk-logs\1.42.1\opentelemetry-sdk-logs-1.42.1.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-os\4.25.0\selenium-os-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\apache\commons\commons-exec\1.4.0\commons-exec-1.4.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-safari-driver\4.25.0\selenium-safari-driver-4.25.0.jar;C:\Users\Thedr\.m2\repository\org\seleniumhq\selenium\selenium-support\4.25.0\selenium-support-4.25.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\cucumber-java\7.18.0\cucumber-java-7.18.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\cucumber-core\7.18.0\cucumber-core-7.18.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\cucumber-gherkin\7.18.0\cucumber-gherkin-7.18.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\cucumber-gherkin-messages\7.18.0\cucumber-gherkin-messages-7.18.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\gherkin\28.0.0\gherkin-28.0.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\messages\24.1.0\messages-24.1.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\testng-xml-formatter\0.1.0\testng-xml-formatter-0.1.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\query\12.2.0\query-12.2.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\tag-expressions\6.1.0\tag-expressions-6.1.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\cucumber-expressions\17.1.0\cucumber-expressions-17.1.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\datatable\7.18.0\datatable-7.18.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\cucumber-plugin\7.18.0\cucumber-plugin-7.18.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\docstring\7.18.0\docstring-7.18.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\html-formatter\21.3.1\html-formatter-21.3.1.jar;C:\Users\Thedr\.m2\repository\io\cucumber\junit-xml-formatter\0.4.0\junit-xml-formatter-0.4.0.jar;C:\Users\Thedr\.m2\repository\io\cucumber\ci-environment\10.0.1\ci-environment-10.0.1.jar;C:\Users\Thedr\.m2\repository\org\apiguardian\apiguardian-api\1.1.2\apiguardian-api-1.1.2.jar;C:\Users\Thedr\.m2\repository\io\cucumber\cucumber-junit-platform-engine\7.18.0\cucumber-junit-platform-engine-7.18.0.jar;C:\Users\Thedr\.m2\repository\org\junit\platform\junit-platform-engine\1.10.2\junit-platform-engine-1.10.2.jar;C:\Users\Thedr\.m2\repository\org\opentest4j\opentest4j\1.3.0\opentest4j-1.3.0.jar;C:\Users\Thedr\.m2\repository\org\junit\platform\junit-platform-commons\1.10.2\junit-platform-commons-1.10.2.jar;C:\Users\Thedr\.m2\repository\org\junit\jupiter\junit-jupiter\5.11.2\junit-jupiter-5.11.2.jar;C:\Users\Thedr\.m2\repository\org\junit\jupiter\junit-jupiter-api\5.11.2\junit-jupiter-api-5.11.2.jar;C:\Users\Thedr\.m2\repository\org\junit\jupiter\junit-jupiter-params\5.11.2\junit-jupiter-params-5.11.2.jar;C:\Users\Thedr\.m2\repository\org\junit\jupiter\junit-jupiter-engine\5.11.2\junit-jupiter-engine-5.11.2.jar;C:\Users\Thedr\.m2\repository\org\junit\platform\junit-platform-suite\1.10.2\junit-platform-suite-1.10.2.jar;C:\Users\Thedr\.m2\repository\org\junit\platform\junit-platform-suite-api\1.10.2\junit-platform-suite-api-1.10.2.jar;C:\Users\Thedr\.m2\repository\org\junit\platform\junit-platform-suite-engine\1.10.2\junit-platform-suite-engine-1.10.2.jar;C:\Users\Thedr\.m2\repository\org\junit\platform\junit-platform-suite-commons\1.10.2\junit-platform-suite-commons-1.10.2.jar;C:\Users\Thedr\.m2\repository\org\junit\platform\junit-platform-launcher\1.10.2\junit-platform-launcher-1.10.2.jar;C:\Users\Thedr\.m2\repository\io\github\bonigarcia\webdrivermanager\5.9.2\webdrivermanager-5.9.2.jar;C:\Users\Thedr\.m2\repository\org\slf4j\slf4j-api\2.0.13\slf4j-api-2.0.13.jar;C:\Users\Thedr\.m2\repository\com\google\code\gson\gson\2.11.0\gson-2.11.0.jar;C:\Users\Thedr\.m2\repository\com\google\errorprone\error_prone_annotations\2.27.0\error_prone_annotations-2.27.0.jar;C:\Users\Thedr\.m2\repository\com\github\docker-java\docker-java\3.4.0\docker-java-3.4.0.jar;C:\Users\Thedr\.m2\repository\com\github\docker-java\docker-java-core\3.4.0\docker-java-core-3.4.0.jar;C:\Users\Thedr\.m2\repository\com\github\docker-java\docker-java-api\3.4.0\docker-java-api-3.4.0.jar;C:\Users\Thedr\.m2\repository\org\slf4j\jcl-over-slf4j\1.7.30\jcl-over-slf4j-1.7.30.jar;C:\Users\Thedr\.m2\repository\com\github\docker-java\docker-java-transport-httpclient5\3.4.0\docker-java-transport-httpclient5-3.4.0.jar;C:\Users\Thedr\.m2\repository\com\github\docker-java\docker-java-transport\3.4.0\docker-java-transport-3.4.0.jar;C:\Users\Thedr\.m2\repository\net\java\dev\jna\jna\5.13.0\jna-5.13.0.jar;C:\Users\Thedr\.m2\repository\org\brotli\dec\0.1.2\dec-0.1.2.jar;C:\Users\Thedr\.m2\repository\org\apache\commons\commons-lang3\3.15.0\commons-lang3-3.15.0.jar;C:\Users\Thedr\.m2\repository\org\apache\commons\commons-compress\1.26.2\commons-compress-1.26.2.jar;C:\Users\Thedr\.m2\repository\commons-codec\commons-codec\1.17.0\commons-codec-1.17.0.jar;C:\Users\Thedr\.m2\repository\org\apache\httpcomponents\client5\httpclient5\5.2.1\httpclient5-5.2.1.jar;C:\Users\Thedr\.m2\repository\org\apache\httpcomponents\core5\httpcore5\5.2\httpcore5-5.2.jar;C:\Users\Thedr\.m2\repository\org\apache\httpcomponents\core5\httpcore5-h2\5.2\httpcore5-h2-5.2.jar;C:\Users\Thedr\.m2\repository\org\assertj\assertj-core\3.26.3\assertj-core-3.26.3.jar;C:\Users\Thedr\.m2\repository\net\bytebuddy\byte-buddy\1.14.18\byte-buddy-1.14.18.jar;C:\Users\Thedr\.m2\repository\net\masterthought\cucumber-reporting\5.7.8\cucumber-reporting-5.7.8.jar;C:\Users\Thedr\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.16.0\jackson-databind-2.16.0.jar;C:\Users\Thedr\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.16.0\jackson-annotations-2.16.0.jar;C:\Users\Thedr\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.16.0\jackson-core-2.16.0.jar;C:\Users\Thedr\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.16.0\jackson-datatype-jsr310-2.16.0.jar;C:\Users\Thedr\.m2\repository\org\apache\velocity\velocity-engine-core\2.3\velocity-engine-core-2.3.jar;C:\Users\Thedr\.m2\repository\joda-time\joda-time\2.12.5\joda-time-2.12.5.jar;C:\Users\Thedr\.m2\repository\commons-io\commons-io\2.7\commons-io-2.7.jar;C:\Users\Thedr\.m2\repository\org\codehaus\plexus\plexus-utils\3.5.1\plexus-utils-3.5.1.jar;C:\Users\Thedr\.m2\repository\org\jsoup\jsoup\1.17.1\jsoup-1.17.1.jar;C:\Users\Thedr\.m2\repository\com\googlecode\owasp-java-html-sanitizer\owasp-java-html-sanitizer\20220608.1\owasp-java-html-sanitizer-20220608.1.jar;C:\Users\Thedr\.m2\repository\commons-configuration\commons-configuration\1.10\commons-configuration-1.10.jar;C:\Users\Thedr\.m2\repository\commons-lang\commons-lang\2.6\commons-lang-2.6.jar;C:\Users\Thedr\.m2\repository\commons-logging\commons-logging\1.1.1\commons-logging-1.1.1.jar;"/>
     <property name="sun.cpu.endian" value="little"/>
@@ -30,7 +30,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="C:\Users\Thedr\AppData\Local\Temp\surefire17776089429749829101\surefirebooter-20251128160242516_3.jar"/>
+    <property name="surefire.real.class.path" value="C:\Users\Thedr\AppData\Local\Temp\surefire10736431799152925039\surefirebooter-20251209114440262_3.jar"/>
     <property name="user.script" value=""/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="21.0.8+12-LTS-250"/>
@@ -46,6 +46,7 @@
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
     <property name="java.io.tmpdir" value="C:\Users\Thedr\AppData\Local\Temp\"/>
     <property name="java.version" value="21.0.8"/>
+    <property name="cucumber.filter.tags" value="@sim"/>
     <property name="user.dir" value="C:\Users\Thedr\Desktop\YUBASE\selenium-bdd"/>
     <property name="os.arch" value="amd64"/>
     <property name="java.vm.specification.name" value="Java Virtual Machine Specification"/>
@@ -60,320 +61,76 @@
     <property name="java.class.version" value="65.0"/>
   </properties>
   <testcase name="Submit a basic form successfully" classname="Web form submission" time="0.0">
-    <skipped message="&apos;cucumber.filter.tags=( ( @signin or @performance ) or @compatibility )&apos; did not match this scenario"/>
-    <system-err><![CDATA[Nov 28, 2025 4:02:44 PM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
-WARNING: Unable to find CDP implementation matching 142
-Nov 28, 2025 4:02:44 PM org.openqa.selenium.chromium.ChromiumDriver lambda$new$5
-WARNING: Unable to find version of CDP to use for 142.0.3595.94. You may need to include a dependency on a specific version of the CDP using something similar to `org.seleniumhq.selenium:selenium-devtools-v86:4.25.0` where the version ("v86") matches the version of the chromium-based browser you're using and the version number of the artifact is the same as Selenium's.
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
+    <system-err><![CDATA[Dec 09, 2025 11:44:43 AM org.openqa.selenium.devtools.CdpVersionFinder findNearestMatch
+WARNING: Unable to find CDP implementation matching 143
+Dec 09, 2025 11:44:43 AM org.openqa.selenium.chromium.ChromiumDriver lambda$new$5
+WARNING: Unable to find version of CDP to use for 143.0.3650.66. You may need to include a dependency on a specific version of the CDP using something similar to `org.seleniumhq.selenium:selenium-devtools-v86:4.25.0` where the version ("v86") matches the version of the chromium-based browser you're using and the version number of the artifact is the same as Selenium's.
 ]]></system-err>
   </testcase>
-  <testcase name="Verify URL and Page Load Criteria" classname="Yuba Website Performance and Compatibility Testing" time="4.283">
-    <system-out><![CDATA[
-@performance
-Scenario: Verify URL and Page Load Criteria             &amp#27;[90m# features/yuba_performance_compatibility.feature:7&amp#27;[0m
-  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mI navigate to the Yuba website&amp#27;[0m                  &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.i_navigate_to_the_yuba_website()&amp#27;[0m
-  &amp#27;[32mWhen &amp#27;[0m&amp#27;[32mthe page loads&amp#27;[0m                                   &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.the_page_loads()&amp#27;[0m
-  &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe website should load successfully&amp#27;[0m             &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.the_website_should_load_successfully()&amp#27;[0m
-  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mthe HTTP status code should be 200 OK&amp#27;[0m             &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.the_http_status_code_should_be_200_ok()&amp#27;[0m
-  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mthere should be no server errors&amp#27;[0m                  &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.there_should_be_no_server_errors()&amp#27;[0m
-=== PAGE LOAD TIME ANALYSIS ===
-Navigation Timing API: 2.627 seconds
-Content Load Time: 0.132 seconds
-Actual Load Time Used: 2.627 seconds
-===============================
-📊 Test result recorded: URL & Page Load Criteria - PASSED (2.627s)
-  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mthe page load time should be less than 35 seconds&amp#27;[0m &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.the_page_load_time_should_be_less_than_35_seconds()&amp#27;[0m
-]]></system-out>
+  <testcase name="Verify URL and Page Load Criteria" classname="Yuba Website Performance and Compatibility Testing" time="0.0">
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
   </testcase>
-  <testcase name="Verify Desktop Responsive Behavior" classname="Yuba Website Performance and Compatibility Testing" time="9.68">
-    <system-out><![CDATA[
-@compatibility @responsive
-Scenario: Verify Desktop Responsive Behavior                     &amp#27;[90m# features/yuba_performance_compatibility.feature:16&amp#27;[0m
-  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mI navigate to the Yuba website with desktop viewport&amp#27;[0m     &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.i_navigate_to_the_yuba_website_with_desktop_viewport()&amp#27;[0m
-  &amp#27;[32mWhen &amp#27;[0m&amp#27;[32mthe page loads completely&amp#27;[0m                                 &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.the_page_loads_completely()&amp#27;[0m
-  &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe desktop layout should render correctly&amp#27;[0m                &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.the_desktop_layout_should_render_correctly()&amp#27;[0m
-  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mthere should be no UI misalignment or overlapping elements&amp#27;[0m &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.there_should_be_no_ui_misalignment_or_overlapping_elements()&amp#27;[0m
-  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mthere should be no horizontal scrolling&amp#27;[0m                    &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.there_should_be_no_horizontal_scrolling()&amp#27;[0m
-  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mall main UI components should be visible&amp#27;[0m                   &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.all_main_ui_components_should_be_visible()&amp#27;[0m
-]]></system-out>
+  <testcase name="Verify Desktop Responsive Behavior" classname="Yuba Website Performance and Compatibility Testing" time="0.0">
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
   </testcase>
-  <testcase name="Example #1.1" classname="Examples" time="2.394">
-    <system-out><![CDATA[
-@compatibility @browser
-Scenario Outline: Verify Browser Compatibility    &amp#27;[90m# features/yuba_performance_compatibility.feature:33&amp#27;[0m
-  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mI navigate to the Yuba website using &amp#27;[0m&amp#27;[32m&amp#27;[1mEdge&amp#27;[0m &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.i_navigate_to_the_yuba_website_using(java.lang.String)&amp#27;[0m
-  &amp#27;[32mWhen &amp#27;[0m&amp#27;[32mthe page loads&amp#27;[0m                             &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.the_page_loads()&amp#27;[0m
-  &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe website should load successfully&amp#27;[0m       &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.the_website_should_load_successfully()&amp#27;[0m
-  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mthe page should render without errors&amp#27;[0m       &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.the_page_should_render_without_errors()&amp#27;[0m
-]]></system-out>
+  <testcase name="Example #1.1" classname="Examples" time="0.0">
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
   </testcase>
-  <testcase name="Example #1.2" classname="Examples" time="1.857">
-    <system-out><![CDATA[
-@compatibility @browser
-Scenario Outline: Verify Browser Compatibility      &amp#27;[90m# features/yuba_performance_compatibility.feature:34&amp#27;[0m
-  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mI navigate to the Yuba website using &amp#27;[0m&amp#27;[32m&amp#27;[1mChrome&amp#27;[0m &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.i_navigate_to_the_yuba_website_using(java.lang.String)&amp#27;[0m
-  &amp#27;[32mWhen &amp#27;[0m&amp#27;[32mthe page loads&amp#27;[0m                               &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.the_page_loads()&amp#27;[0m
-  &amp#27;[32mThen &amp#27;[0m&amp#27;[32mthe website should load successfully&amp#27;[0m         &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.the_website_should_load_successfully()&amp#27;[0m
-  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mthe page should render without errors&amp#27;[0m         &amp#27;[90m# com.example.automation.steps.YubaPerformanceSteps.the_page_should_render_without_errors()&amp#27;[0m
-]]></system-out>
+  <testcase name="Example #1.2" classname="Examples" time="0.0">
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
   </testcase>
-  <testcase name="Complete sign in process with dashboard navigation" classname="Yuba Sign In" time="117.252">
+  <testcase name="Complete sign in process with dashboard navigation" classname="Yuba Sign In" time="0.0">
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
+  </testcase>
+  <testcase name="Complete sign in process with dashboard navigation" classname="Yuba SIM" time="192.505">
     <system-out><![CDATA[
-@signin @signin
-Scenario: Complete sign in process with dashboard navigation &amp#27;[90m# features/yuba_sign_in.feature:8&amp#27;[0m
-  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mI open the Yuba homepage&amp#27;[0m                             &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_open_the_yuba_homepage()&amp#27;[0m
-  &amp#27;[32mWhen &amp#27;[0m&amp#27;[32mI click the Sign In button&amp#27;[0m                            &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_click_the_sign_in_button()&amp#27;[0m
-  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mI enter my email &amp#27;[0m&amp#27;[32m&amp#27;[1m"thedronberhanu05@gmail.com"&amp#27;[0m          &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_enter_my_email(java.lang.String)&amp#27;[0m
-  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mI enter my password &amp#27;[0m&amp#27;[32m&amp#27;[1m"Ttbbss&$12"&amp#27;[0m                       &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_enter_my_password(java.lang.String)&amp#27;[0m
-  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mI click the sign in submit button&amp#27;[0m                      &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_click_the_sign_in_submit_button()&amp#27;[0m
-  &amp#27;[32mThen &amp#27;[0m&amp#27;[32mI should be signed in successfully&amp#27;[0m                    &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_should_be_signed_in_successfully()&amp#27;[0m
-=== DASHBOARD LOADING TIME TRACKING STARTED ===
-Dashboard navigation button clicked at: 1764335030206ms
-Starting comprehensive content loading detection...
-  &amp#27;[32mWhen &amp#27;[0m&amp#27;[32mI click the dashboard navigation button&amp#27;[0m               &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_click_the_dashboard_navigation_button()&amp#27;[0m
-Waiting for dashboard content to fully load...
-Still loading... found 1 visible loading indicators out of 2 total
-Still loading... found 1 visible loading indicators out of 2 total
-Still loading... found 1 visible loading indicators out of 2 total
-Still loading... found 3 visible loading indicators out of 4 total
-Still loading... found 3 visible loading indicators out of 4 total
-Still loading... found 2 visible loading indicators out of 3 total
-Still loading... found 2 visible loading indicators out of 3 total
-Still loading... found 2 visible loading indicators out of 3 total
-Found 27 dashboard elements, content length: 615
-Images still loading
-Found 13 dashboard elements, content length: 816
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-Found 13 dashboard elements, content length: 807
-Images still loading
-=== TIMEOUT OCCURRED BUT MEASURING ACTUAL LOAD TIME ===
-Dashboard loading timed out after: 60.228 seconds
-This represents the REAL loading time experience!
-Current URL: https://yubanow.com/workspace
-Content length: 807 characters
-Continuing with test despite timeout to capture real performance metrics...
-Dashboard page verification completed at: 1764335090434ms
-  &amp#27;[32mThen &amp#27;[0m&amp#27;[32mI should reach the dashboard workspace page&amp#27;[0m           &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_should_reach_the_dashboard_workspace_page()&amp#27;[0m
-=== ENHANCED DASHBOARD LOADING TIME TRACKING ===
-Button clicked at: 1764335030206ms
-Dashboard content fully loaded at: 1764335090434ms
-Total dashboard loading time: 60228ms (60.228 seconds)
-Performance Timing Metrics:
-  - DOM Content Loaded: {domContentLoaded=0.349, firstPaint=0.279, loadComplete=1.825}
-Dashboard elements found: 234
-Current URL: https://yubanow.com/workspace
-Page Title: Yuba - A Sounding Board for African Entrepreneurs
-================================================
-📊 Test result recorded: Dashboard Loading Time Tracking - PASSED (60.228s)
-  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mthe dashboard loading time should be tracked&amp#27;[0m           &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.the_dashboard_loading_time_should_be_tracked()&amp#27;[0m
+@sim @sim
+Scenario: Complete sign in process with dashboard navigation                                                                                           &amp#27;[90m# features/yuba_sim.feature:8&amp#27;[0m
+  &amp#27;[32mGiven &amp#27;[0m&amp#27;[32mI open the Yuba homepage&amp#27;[0m                                                                                                                       &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_open_the_yuba_homepage()&amp#27;[0m
+  &amp#27;[32mWhen &amp#27;[0m&amp#27;[32mI click the Sign In button&amp#27;[0m                                                                                                                      &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_click_the_sign_in_button()&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mI enter my email &amp#27;[0m&amp#27;[32m&amp#27;[1m"tewodrosberhanu16@gmail.com"&amp#27;[0m                                                                                                   &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_enter_my_email(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mI enter my password &amp#27;[0m&amp#27;[32m&amp#27;[1m"Ttbbss12&$"&amp#27;[0m                                                                                                                 &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_enter_my_password(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mI click the sign in submit button&amp#27;[0m                                                                                                                &amp#27;[90m# com.example.automation.steps.YubaSignInSteps.i_click_the_sign_in_submit_button()&amp#27;[0m
+Initial URL after sign-in: https://yubanow.com/signin
+Navigation detected. Current URL: https://yubanow.com/choose-workspace
+After navigation, current URL: https://yubanow.com/choose-workspace
+Waiting for workspace page to load... Body length: 101
+Waiting for workspace page to load... Body length: 101
+Waiting for workspace page to load... Body length: 101
+Waiting for workspace page to load... Body length: 101
+Successfully navigated to choose-workspace page: https://yubanow.com/choose-workspace
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mI wait for navigation to choose workspace page&amp#27;[0m                                                                                                   &amp#27;[90m# com.example.automation.steps.YubaSimSteps.i_wait_for_navigation_to_choose_workspace_page()&amp#27;[0m
+Successfully clicked element at: /html/body/div[1]/div/div/div[2]/div[1]
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mI click the element &amp#27;[0m&amp#27;[32m&amp#27;[1m"/html/body/div[1]/div/div/div[2]/div[1]"&amp#27;[0m                                                                                    &amp#27;[90m# com.example.automation.steps.YubaSimSteps.i_click_the_element(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mI click the button &amp#27;[0m&amp#27;[32m&amp#27;[1m"/html/body/div[1]/div/div/div[3]/button[1]"&amp#27;[0m                                                                                  &amp#27;[90m# com.example.automation.steps.YubaSimSteps.i_click_the_button(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mI click the navigation link &amp#27;[0m&amp#27;[32m&amp#27;[1m"/html/body/div[1]/aside/div[2]/nav/ul/li[2]/a"&amp#27;[0m                                                                      &amp#27;[90m# com.example.automation.steps.YubaSimSteps.i_click_the_navigation_link(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mI enter email &amp#27;[0m&amp#27;[32m&amp#27;[1m"tewodrosberhanu19@gmail.com"&amp#27;[0m&amp#27;[32m in the individual email field&amp#27;[0m                                                                        &amp#27;[90m# com.example.automation.steps.YubaSimSteps.i_enter_email_in_the_individual_email_field(java.lang.String)&amp#27;[0m
+  &amp#27;[32mAnd &amp#27;[0m&amp#27;[32mI click the form submit button &amp#27;[0m&amp#27;[32m&amp#27;[1m"/html/body/div[1]/div/main/div/div[2]/div[1]/div/div[2]/div/div/div/div[2]/form/div[3]/div[2]/div[1]/div/button"&amp#27;[0m &amp#27;[90m# com.example.automation.steps.YubaSimSteps.i_click_the_form_submit_button(java.lang.String)&amp#27;[0m
 ]]></system-out>
   </testcase>
   <testcase name="Verify homepage loads with key elements" classname="Yuba Website Navigation and Functionality" time="0.0">
-    <skipped message="&apos;cucumber.filter.tags=( ( @signin or @performance ) or @compatibility )&apos; did not match this scenario"/>
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
   </testcase>
   <testcase name="Navigate to different sections" classname="Yuba Website Navigation and Functionality" time="0.0">
-    <skipped message="&apos;cucumber.filter.tags=( ( @signin or @performance ) or @compatibility )&apos; did not match this scenario"/>
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
   </testcase>
   <testcase name="Verify Problem Discovery module is accessible" classname="Yuba Website Navigation and Functionality" time="0.0">
-    <skipped message="&apos;cucumber.filter.tags=( ( @signin or @performance ) or @compatibility )&apos; did not match this scenario"/>
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
   </testcase>
   <testcase name="Verify trusted partners section displays" classname="Yuba Website Navigation and Functionality" time="0.0">
-    <skipped message="&apos;cucumber.filter.tags=( ( @signin or @performance ) or @compatibility )&apos; did not match this scenario"/>
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
   </testcase>
   <testcase name="Verify industry agnostic section" classname="Yuba Website Navigation and Functionality" time="0.0">
-    <skipped message="&apos;cucumber.filter.tags=( ( @signin or @performance ) or @compatibility )&apos; did not match this scenario"/>
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
   </testcase>
   <testcase name="Verify Venture Builders section" classname="Yuba Website Navigation and Functionality" time="0.0">
-    <skipped message="&apos;cucumber.filter.tags=( ( @signin or @performance ) or @compatibility )&apos; did not match this scenario"/>
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
   </testcase>
   <testcase name="Verify FAQs section functionality" classname="Yuba Website Navigation and Functionality" time="0.0">
-    <skipped message="&apos;cucumber.filter.tags=( ( @signin or @performance ) or @compatibility )&apos; did not match this scenario"/>
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
   </testcase>
   <testcase name="Verify footer elements" classname="Yuba Website Navigation and Functionality" time="0.0">
-    <skipped message="&apos;cucumber.filter.tags=( ( @signin or @performance ) or @compatibility )&apos; did not match this scenario"/>
+    <skipped message="&apos;cucumber.filter.tags=@sim&apos; did not match this scenario"/>
   </testcase>
 </testsuite>

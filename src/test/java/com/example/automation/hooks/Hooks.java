@@ -52,6 +52,13 @@ public class Hooks {
             System.err.println("Failed to generate custom report: " + e.getMessage());
         }
         
+        // Generate SIM-specific HTML report
+        try {
+            com.example.automation.reporting.SimHtmlReportGenerator.generateSimReport();
+        } catch (Exception e) {
+            System.err.println("Failed to generate SIM report: " + e.getMessage());
+        }
+        
         // Quit driver only once at the end of all scenarios
         if (driverInitialized) {
             DriverFactory.quitDriver();

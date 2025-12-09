@@ -64,44 +64,50 @@ public class SimHtmlReportGenerator {
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #2c3e50;
+            background: #f5f7fa;
             min-height: 100vh;
+            padding: 0;
+            margin: 0;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px 20px;
         }
         
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 40px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #3498db;
+            text-align: left;
         }
         
         .header h1 {
-            color: #2c3e50;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 700;
+            color: #1a1a1a;
+            font-size: 2.2em;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
         }
         
         .header .subtitle {
-            color: #7f8c8d;
-            font-size: 1.2em;
-            margin-bottom: 20px;
+            color: #64748b;
+            font-size: 1.1em;
+            margin-bottom: 16px;
+            font-weight: 400;
         }
         
         .header .timestamp {
-            color: #95a5a6;
+            color: #94a3b8;
             font-size: 0.9em;
+            font-weight: 400;
         }
         
         .stats-grid {
@@ -112,29 +118,33 @@ public class SimHtmlReportGenerator {
         }
         
         .stat-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            text-align: left;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
         }
         
         .stat-card:hover {
-            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
         
         .stat-number {
-            font-size: 3em;
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-size: 2.5em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1;
         }
         
         .stat-label {
-            color: #7f8c8d;
-            font-size: 1.1em;
+            color: #64748b;
+            font-size: 0.875em;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            font-weight: 500;
         }
         
         .passed { color: #27ae60; }
@@ -148,18 +158,22 @@ public class SimHtmlReportGenerator {
         }
         
         .test-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
         }
         
         .section-title {
-            font-size: 1.8em;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #f5576c;
+            font-size: 1.5em;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+            font-weight: 600;
+            letter-spacing: -0.3px;
         }
         
         .test-item {
@@ -215,42 +229,47 @@ public class SimHtmlReportGenerator {
         }
         
         .step-item {
-            padding: 10px;
-            margin: 5px 0;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #3498db;
+            padding: 12px 16px;
+            margin: 6px 0;
+            background: #f8fafc;
+            border-radius: 6px;
+            border-left: 3px solid #cbd5e1;
         }
         
         .step-item.passed {
-            border-left-color: #27ae60;
+            border-left-color: #10b981;
+            background: #f0fdf4;
         }
         
         .step-item.failed {
-            border-left-color: #e74c3c;
+            border-left-color: #ef4444;
+            background: #fef2f2;
         }
         
         .step-item.skipped {
-            border-left-color: #f39c12;
+            border-left-color: #f59e0b;
+            background: #fffbeb;
         }
         
         .step-name {
             font-weight: 500;
-            color: #2c3e50;
+            color: #1a1a1a;
+            font-size: 0.95em;
         }
         
         .step-status {
-            font-size: 0.85em;
-            color: #7f8c8d;
-            margin-top: 5px;
+            font-size: 0.8125em;
+            color: #64748b;
+            margin-top: 4px;
         }
         
         .browser-info {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 32px;
+            margin-top: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
         }
         
         .browser-grid {
@@ -263,8 +282,14 @@ public class SimHtmlReportGenerator {
         .browser-item {
             text-align: center;
             padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .browser-item strong {
+            color: #1a1a1a;
+            font-weight: 600;
         }
         
         .browser-icon {
@@ -274,9 +299,17 @@ public class SimHtmlReportGenerator {
         
         .footer {
             text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: rgba(255, 255, 255, 0.8);
+            margin-top: 48px;
+            padding: 24px;
+            color: #64748b;
+            font-size: 0.875em;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .footer p {
+            margin: 4px 0;
         }
         
         .performance-metrics {
@@ -287,30 +320,33 @@ public class SimHtmlReportGenerator {
         }
         
         .metric-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 6px;
             text-align: center;
+            border: 1px solid #e2e8f0;
         }
         
         .metric-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #2c3e50;
+            font-size: 1.75em;
+            font-weight: 600;
+            color: #1a1a1a;
         }
         
         .metric-label {
-            color: #7f8c8d;
-            font-size: 0.9em;
-            margin-top: 5px;
+            color: #64748b;
+            font-size: 0.875em;
+            margin-top: 8px;
+            font-weight: 500;
         }
         
         .chart-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 28px;
+            margin: 24px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
             position: relative;
             height: 400px;
         }
@@ -331,8 +367,8 @@ public class SimHtmlReportGenerator {
         }
         
         .performance-table thead {
-            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
-            color: white;
+            background: #1e293b;
+            color: #ffffff;
         }
         
         .performance-table th {
@@ -397,11 +433,28 @@ public class SimHtmlReportGenerator {
         }
         
         .summary-stat {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
+            background: #1e293b;
+            color: #ffffff;
+            padding: 24px;
+            border-radius: 8px;
             text-align: center;
+            border: 1px solid #334155;
+        }
+        
+        .summary-stat:nth-child(1) {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+        
+        .summary-stat:nth-child(2) {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+        
+        .summary-stat:nth-child(3) {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+        
+        .summary-stat:nth-child(4) {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
         }
         
         .summary-stat-value {
@@ -457,7 +510,7 @@ public class SimHtmlReportGenerator {
                 </div>
                 
                 <div class="step-list">
-                    <h3 style="margin-top: 20px; margin-bottom: 15px; color: #2c3e50;">Test Steps:</h3>
+                    <h3 style="margin-top: 24px; margin-bottom: 16px; color: #1a1a1a; font-size: 1.1em; font-weight: 600;">Test Steps:</h3>
                     <div class="step-item passed">
                         <div class="step-name">✅ Given I open the Yuba homepage</div>
                         <div class="step-status">Opens the Yuba website homepage</div>
@@ -530,19 +583,19 @@ public class SimHtmlReportGenerator {
             <div class="test-section">
                 <h2 class="section-title">📈 Performance Charts</h2>
                 <div class="chart-container">
-                    <h3 style="margin-bottom: 15px; color: #2c3e50;">Response Times by Step</h3>
+                    <h3 style="margin-bottom: 16px; color: #1a1a1a; font-size: 1.1em; font-weight: 600;">Response Times by Step</h3>
                     <div class="chart-wrapper">
                         <canvas id="responseTimeChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-container">
-                    <h3 style="margin-bottom: 15px; color: #2c3e50;">Load Times by Step</h3>
+                    <h3 style="margin-bottom: 16px; color: #1a1a1a; font-size: 1.1em; font-weight: 600;">Load Times by Step</h3>
                     <div class="chart-wrapper">
                         <canvas id="loadTimeChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-container">
-                    <h3 style="margin-bottom: 15px; color: #2c3e50;">Total Time Comparison</h3>
+                    <h3 style="margin-bottom: 16px; color: #1a1a1a; font-size: 1.1em; font-weight: 600;">Total Time Comparison</h3>
                     <div class="chart-wrapper">
                         <canvas id="totalTimeChart"></canvas>
                     </div>
@@ -641,8 +694,15 @@ public class SimHtmlReportGenerator {
         </div>
         
         <div class="footer">
-            <p>🎯 <strong>Yuba SIM Testing Suite</strong> | Automated with Selenium WebDriver & Cucumber BDD</p>
+            <p><strong>Yuba SIM (Send Invitation) Testing Suite</strong> | Automated with Selenium WebDriver & Cucumber BDD</p>
             <p>Generated by SIM HTML Reporter | Framework: Maven + JUnit Platform</p>
+            <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
+                Tested and report prepared by <a href="https://tewodrosberhanu.com" target="_blank" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Tewodros</a> 
+                <span style="color: #64748b;">|</span> 
+                <a href="https://tewodrosberhanu.com" target="_blank" style="color: #3b82f6; text-decoration: none;">
+                    <span style="display: inline-block; margin-left: 4px;">www.tewodrosberhanu.com</span>
+                </a>
+            </p>
         </div>
     </div>
     
@@ -758,15 +818,15 @@ public class SimHtmlReportGenerator {
 </html>
 """;
         
-        // Replace placeholders
+        // Replace placeholders - IMPORTANT: Replace longer placeholders first to avoid partial replacements
         html = html.replace("TIMESTAMP_PLACEHOLDER", timestamp);
         html = html.replace("PERF_DATA_JSON", performanceDataJson);
         html = html.replace("PERF_TABLE_ROWS", stepTableRows);
+        html = html.replace("PERF_DATA_TOTAL_FORMATTED", formatDuration(totalExecutionTime)); // Replace longer placeholder first
         html = html.replace("PERF_DATA_AVG_RESPONSE", String.format("%.3f", avgResponseTime));
         html = html.replace("PERF_DATA_AVG_LOAD", String.format("%.3f", avgLoadTime));
         html = html.replace("PERF_DATA_TOTAL", String.format("%.2f", totalExecutionTime / 1000.0));
         html = html.replace("PERF_DATA_STEPS", String.valueOf(metrics.size()));
-        html = html.replace("PERF_DATA_TOTAL_FORMATTED", formatDuration(totalExecutionTime));
         
         return html;
     }

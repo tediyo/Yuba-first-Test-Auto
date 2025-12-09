@@ -13,44 +13,50 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
             line-height: 1.6;
-            color: #333;
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: #2c3e50;
+            background: #f5f7fa;
             min-height: 100vh;
+            padding: 0;
+            margin: 0;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 40px 20px;
         }
 
         .header {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 40px;
             margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            border-left: 4px solid #3498db;
+            text-align: left;
         }
 
         .header h1 {
-            color: #2c3e50;
-            font-size: 2.5em;
-            margin-bottom: 10px;
-            font-weight: 700;
+            color: #1a1a1a;
+            font-size: 2.2em;
+            margin-bottom: 12px;
+            font-weight: 600;
+            letter-spacing: -0.5px;
         }
 
         .header .subtitle {
-            color: #7f8c8d;
-            font-size: 1.2em;
-            margin-bottom: 20px;
+            color: #64748b;
+            font-size: 1.1em;
+            margin-bottom: 16px;
+            font-weight: 400;
         }
 
         .header .timestamp {
-            color: #95a5a6;
+            color: #94a3b8;
             font-size: 0.9em;
+            font-weight: 400;
         }
 
         .stats-grid {
@@ -61,29 +67,33 @@
         }
 
         .stat-card {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease;
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 24px;
+            text-align: left;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
         }
 
         .stat-card:hover {
-            transform: translateY(-5px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
         }
 
         .stat-number {
-            font-size: 3em;
-            font-weight: bold;
-            margin-bottom: 10px;
+            font-size: 2.5em;
+            font-weight: 600;
+            margin-bottom: 8px;
+            line-height: 1;
         }
 
         .stat-label {
-            color: #7f8c8d;
-            font-size: 1.1em;
+            color: #64748b;
+            font-size: 0.875em;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
+            font-weight: 500;
         }
 
         .passed { color: #27ae60; }
@@ -97,18 +107,22 @@
         }
 
         .test-section {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 32px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 24px;
         }
 
         .section-title {
-            font-size: 1.8em;
-            color: #2c3e50;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-            border-bottom: 3px solid #f5576c;
+            font-size: 1.5em;
+            color: #1a1a1a;
+            margin-bottom: 24px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid #e2e8f0;
+            font-weight: 600;
+            letter-spacing: -0.3px;
         }
 
         .test-item {
@@ -164,42 +178,47 @@
         }
 
         .step-item {
-            padding: 10px;
-            margin: 5px 0;
-            background: #f8f9fa;
-            border-radius: 8px;
-            border-left: 4px solid #3498db;
+            padding: 12px 16px;
+            margin: 6px 0;
+            background: #f8fafc;
+            border-radius: 6px;
+            border-left: 3px solid #cbd5e1;
         }
 
         .step-item.passed {
-            border-left-color: #27ae60;
+            border-left-color: #10b981;
+            background: #f0fdf4;
         }
 
         .step-item.failed {
-            border-left-color: #e74c3c;
+            border-left-color: #ef4444;
+            background: #fef2f2;
         }
 
         .step-item.skipped {
-            border-left-color: #f39c12;
+            border-left-color: #f59e0b;
+            background: #fffbeb;
         }
 
         .step-name {
             font-weight: 500;
-            color: #2c3e50;
+            color: #1a1a1a;
+            font-size: 0.95em;
         }
 
         .step-status {
-            font-size: 0.85em;
-            color: #7f8c8d;
-            margin-top: 5px;
+            font-size: 0.8125em;
+            color: #64748b;
+            margin-top: 4px;
         }
 
         .browser-info {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            margin-top: 30px;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 32px;
+            margin-top: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
         }
 
         .browser-grid {
@@ -212,8 +231,14 @@
         .browser-item {
             text-align: center;
             padding: 20px;
-            background: #f8f9fa;
-            border-radius: 10px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .browser-item strong {
+            color: #1a1a1a;
+            font-weight: 600;
         }
 
         .browser-icon {
@@ -223,9 +248,17 @@
 
         .footer {
             text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            color: rgba(255, 255, 255, 0.8);
+            margin-top: 48px;
+            padding: 24px;
+            color: #64748b;
+            font-size: 0.875em;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .footer p {
+            margin: 4px 0;
         }
 
         .performance-metrics {
@@ -236,30 +269,33 @@
         }
 
         .metric-item {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 6px;
             text-align: center;
+            border: 1px solid #e2e8f0;
         }
 
         .metric-value {
-            font-size: 1.5em;
-            font-weight: bold;
-            color: #2c3e50;
+            font-size: 1.75em;
+            font-weight: 600;
+            color: #1a1a1a;
         }
 
         .metric-label {
-            color: #7f8c8d;
-            font-size: 0.9em;
-            margin-top: 5px;
+            color: #64748b;
+            font-size: 0.875em;
+            margin-top: 8px;
+            font-weight: 500;
         }
 
         .chart-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            padding: 25px;
-            margin: 20px 0;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            background: #ffffff;
+            border-radius: 8px;
+            padding: 28px;
+            margin: 24px 0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
             position: relative;
             height: 400px;
         }
@@ -280,8 +316,8 @@
         }
 
         .performance-table thead {
-            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
-            color: white;
+            background: #1e293b;
+            color: #ffffff;
         }
 
         .performance-table th {
@@ -346,11 +382,28 @@
         }
 
         .summary-stat {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 20px;
-            border-radius: 10px;
+            background: #1e293b;
+            color: #ffffff;
+            padding: 24px;
+            border-radius: 8px;
             text-align: center;
+            border: 1px solid #334155;
+        }
+
+        .summary-stat:nth-child(1) {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        }
+
+        .summary-stat:nth-child(2) {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        }
+
+        .summary-stat:nth-child(3) {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+
+        .summary-stat:nth-child(4) {
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
         }
 
         .summary-stat-value {
@@ -370,7 +423,7 @@
         <div class="header">
             <h1>Complete user invitation to organization by org admins</h1>
             <div class="subtitle">Sign In & Workspace Management, User Invitation Testing</div>
-            <div class="timestamp">Generated on: 2025-12-09 12:07:23</div>
+            <div class="timestamp">Generated on: 2025-12-09 14:16:56</div>
         </div>
 
 
@@ -406,7 +459,7 @@
                 </div>
 
                 <div class="step-list">
-                    <h3 style="margin-top: 20px; margin-bottom: 15px; color: #2c3e50;">Test Steps:</h3>
+                    <h3 style="margin-top: 24px; margin-bottom: 16px; color: #1a1a1a; font-size: 1.1em; font-weight: 600;">Test Steps:</h3>
                     <div class="step-item passed">
                         <div class="step-name">✅ Given I open the Yuba homepage</div>
                         <div class="step-status">Opens the Yuba website homepage</div>
@@ -458,15 +511,15 @@
                 <h2 class="section-title">📊 Performance Summary</h2>
                 <div class="summary-stats">
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="avg-response-time">18.547</div>
+                        <div class="summary-stat-value" id="avg-response-time">18.240</div>
                         <div class="summary-stat-label">Avg Response Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="avg-load-time">0.889</div>
+                        <div class="summary-stat-value" id="avg-load-time">0.899</div>
                         <div class="summary-stat-label">Avg Load Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="total-exec-time">213.81</div>
+                        <div class="summary-stat-value" id="total-exec-time">210.54</div>
                         <div class="summary-stat-label">Total Execution Time (s)</div>
                     </div>
                     <div class="summary-stat">
@@ -479,19 +532,19 @@
             <div class="test-section">
                 <h2 class="section-title">📈 Performance Charts</h2>
                 <div class="chart-container">
-                    <h3 style="margin-bottom: 15px; color: #2c3e50;">Response Times by Step</h3>
+                    <h3 style="margin-bottom: 16px; color: #1a1a1a; font-size: 1.1em; font-weight: 600;">Response Times by Step</h3>
                     <div class="chart-wrapper">
                         <canvas id="responseTimeChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-container">
-                    <h3 style="margin-bottom: 15px; color: #2c3e50;">Load Times by Step</h3>
+                    <h3 style="margin-bottom: 16px; color: #1a1a1a; font-size: 1.1em; font-weight: 600;">Load Times by Step</h3>
                     <div class="chart-wrapper">
                         <canvas id="loadTimeChart"></canvas>
                     </div>
                 </div>
                 <div class="chart-container">
-                    <h3 style="margin-bottom: 15px; color: #2c3e50;">Total Time Comparison</h3>
+                    <h3 style="margin-bottom: 16px; color: #1a1a1a; font-size: 1.1em; font-weight: 600;">Total Time Comparison</h3>
                     <div class="chart-wrapper">
                         <canvas id="totalTimeChart"></canvas>
                     </div>
@@ -513,7 +566,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>1</strong></td><td>Open Yuba homepage</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>158.482s</td><td class='time-cell load-time'>0.060s</td><td class='time-cell total-time'>158.542s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>2</strong></td><td>Click Sign In button</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>30.617s</td><td class='time-cell load-time'>1.022s</td><td class='time-cell total-time'>31.639s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>3</strong></td><td>Enter email</td><td><span class='action-badge action-input'>input</span></td><td class='time-cell response-time'>0.603s</td><td class='time-cell load-time'>0.302s</td><td class='time-cell total-time'>0.905s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>4</strong></td><td>Enter password</td><td><span class='action-badge action-input'>input</span></td><td class='time-cell response-time'>0.223s</td><td class='time-cell load-time'>0.307s</td><td class='time-cell total-time'>0.530s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>5</strong></td><td>Click sign in submit button</td><td><span class='action-badge action-submit'>submit</span></td><td class='time-cell response-time'>0.205s</td><td class='time-cell load-time'>1.010s</td><td class='time-cell total-time'>1.215s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>6</strong></td><td>Wait for navigation to choose workspace page</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>6.486s</td><td class='time-cell load-time'>0.000s</td><td class='time-cell total-time'>6.486s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>7</strong></td><td>Click element: /html/body/div[1]/div/div/div[2]/div[1]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>0.213s</td><td class='time-cell load-time'>2.021s</td><td class='time-cell total-time'>2.234s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>8</strong></td><td>Click button: /html/body/div[1]/div/div/div[3]/button[1]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>0.224s</td><td class='time-cell load-time'>1.012s</td><td class='time-cell total-time'>1.236s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>9</strong></td><td>Click navigation link: /html/body/div[1]/aside/div[2]/nav/ul/li[2]/a</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>2.346s</td><td class='time-cell load-time'>1.520s</td><td class='time-cell total-time'>3.866s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>10</strong></td><td>Enter email in individual email field</td><td><span class='action-badge action-input'>input</span></td><td class='time-cell response-time'>4.376s</td><td class='time-cell load-time'>0.510s</td><td class='time-cell total-time'>4.886s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>11</strong></td><td>Click form submit button: /html/body/div[1]/div/main/div/div[2]/div[1]/div/div[2]/div/div/div/div[2]/form/div[3]/div[2]/div[1]/div/button</td><td><span class='action-badge action-submit'>submit</span></td><td class='time-cell response-time'>0.243s</td><td class='time-cell load-time'>2.016s</td><td class='time-cell total-time'>2.259s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr>
+                        <tr><td><strong>1</strong></td><td>Open Yuba homepage</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>155.756s</td><td class='time-cell load-time'>0.057s</td><td class='time-cell total-time'>155.813s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>2</strong></td><td>Click Sign In button</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>30.412s</td><td class='time-cell load-time'>1.031s</td><td class='time-cell total-time'>31.443s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>3</strong></td><td>Enter email</td><td><span class='action-badge action-input'>input</span></td><td class='time-cell response-time'>0.492s</td><td class='time-cell load-time'>0.311s</td><td class='time-cell total-time'>0.803s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>4</strong></td><td>Enter password</td><td><span class='action-badge action-input'>input</span></td><td class='time-cell response-time'>0.180s</td><td class='time-cell load-time'>0.306s</td><td class='time-cell total-time'>0.486s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>5</strong></td><td>Click sign in submit button</td><td><span class='action-badge action-submit'>submit</span></td><td class='time-cell response-time'>0.136s</td><td class='time-cell load-time'>1.005s</td><td class='time-cell total-time'>1.141s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>6</strong></td><td>Wait for navigation to choose workspace page</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>5.407s</td><td class='time-cell load-time'>0.000s</td><td class='time-cell total-time'>5.407s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>7</strong></td><td>Click element: /html/body/div[1]/div/div/div[2]/div[1]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>0.206s</td><td class='time-cell load-time'>2.019s</td><td class='time-cell total-time'>2.225s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>8</strong></td><td>Click button: /html/body/div[1]/div/div/div[3]/button[1]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>0.127s</td><td class='time-cell load-time'>1.011s</td><td class='time-cell total-time'>1.138s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>9</strong></td><td>Click navigation link: /html/body/div[1]/aside/div[2]/nav/ul/li[2]/a</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>2.305s</td><td class='time-cell load-time'>1.587s</td><td class='time-cell total-time'>3.892s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>10</strong></td><td>Enter email in individual email field</td><td><span class='action-badge action-input'>input</span></td><td class='time-cell response-time'>5.416s</td><td class='time-cell load-time'>0.509s</td><td class='time-cell total-time'>5.925s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>11</strong></td><td>Click form submit button: /html/body/div[1]/div/main/div/div[2]/div[1]/div/div[2]/div/div/div/div[2]/form/div[3]/div[2]/div[1]/div/button</td><td><span class='action-badge action-submit'>submit</span></td><td class='time-cell response-time'>0.198s</td><td class='time-cell load-time'>2.056s</td><td class='time-cell total-time'>2.254s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -526,7 +579,7 @@
                         <div class="metric-label">Total Steps</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value" id="execution-time">213.81_FORMATTED</div>
+                        <div class="metric-value" id="execution-time">3m 30s</div>
                         <div class="metric-label">Execution Time</div>
                     </div>
                     <div class="metric-item">
@@ -592,6 +645,13 @@
         <div class="footer">
             <p>🎯 <strong>Yuba SIM Testing Suite</strong> | Automated with Selenium WebDriver & Cucumber BDD</p>
             <p>Generated by SIM HTML Reporter | Framework: Maven + JUnit Platform</p>
+            <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
+                Tested and report prepared by <a href="https://tewodrosberhanu.com" target="_blank" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Tewodros</a>
+                <span style="color: #64748b;">|</span>
+                <a href="https://tewodrosberhanu.com" target="_blank" style="color: #3b82f6; text-decoration: none;">
+                    <span style="display: inline-block; margin-left: 4px;">🌐 Website</span>
+                </a>
+            </p>
         </div>
     </div>
 
@@ -599,15 +659,15 @@
         // Performance data
         const performanceData = {
   stepLabels: ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5", "Step 6", "Step 7", "Step 8", "Step 9", "Step 10", "Step 11"],
-  responseTimes: [158.482, 30.617, 0.603, 0.223, 0.205, 6.486, 0.213, 0.224, 2.346, 4.376, 0.243],
-  loadTimes: [0.060, 1.022, 0.302, 0.307, 1.010, 0.000, 2.021, 1.012, 1.520, 0.510, 2.016],
-  totalTimes: [158.542, 31.639, 0.905, 0.530, 1.215, 6.486, 2.234, 1.236, 3.866, 4.886, 2.259]
+  responseTimes: [155.756, 30.412, 0.492, 0.180, 0.136, 5.407, 0.206, 0.127, 2.305, 5.416, 0.198],
+  loadTimes: [0.057, 1.031, 0.311, 0.306, 1.005, 0.000, 2.019, 1.011, 1.587, 0.509, 2.056],
+  totalTimes: [155.813, 31.443, 0.803, 0.486, 1.141, 5.407, 2.225, 1.138, 3.892, 5.925, 2.254]
 };
 
         // Update summary stats
-        document.getElementById('avg-response-time').textContent = 18.547 + 's';
-        document.getElementById('avg-load-time').textContent = 0.889 + 's';
-        document.getElementById('total-exec-time').textContent = 213.81 + 's';
+        document.getElementById('avg-response-time').textContent = 18.240 + 's';
+        document.getElementById('avg-load-time').textContent = 0.899 + 's';
+        document.getElementById('total-exec-time').textContent = 210.54 + 's';
         document.getElementById('total-steps-count').textContent = 11;
 
         // Chart configuration

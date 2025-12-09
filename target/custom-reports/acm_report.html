@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yuba SIM Test Report</title>
+    <title>Yuba ACM Test Report</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
@@ -34,7 +34,7 @@
             padding: 40px;
             margin-bottom: 30px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            border-left: 4px solid #3498db;
+            border-left: 4px solid #8b5cf6;
             text-align: left;
         }
 
@@ -96,10 +96,10 @@
             font-weight: 500;
         }
 
-        .passed { color: #27ae60; }
-        .failed { color: #e74c3c; }
-        .skipped { color: #f39c12; }
-        .total { color: #3498db; }
+        .passed { color: #10b981; }
+        .failed { color: #ef4444; }
+        .skipped { color: #f59e0b; }
+        .total { color: #8b5cf6; }
 
         .test-sections {
             display: grid;
@@ -139,11 +139,11 @@
 
         .test-name {
             font-weight: 600;
-            color: #2c3e50;
+            color: #1a1a1a;
         }
 
         .test-description {
-            color: #7f8c8d;
+            color: #64748b;
             font-size: 0.9em;
             margin-top: 5px;
         }
@@ -159,17 +159,17 @@
 
         .status-passed {
             background: #d5f4e6;
-            color: #27ae60;
+            color: #10b981;
         }
 
         .status-failed {
             background: #ffeaea;
-            color: #e74c3c;
+            color: #ef4444;
         }
 
         .status-skipped {
             background: #fff3cd;
-            color: #f39c12;
+            color: #f59e0b;
         }
 
         .step-list {
@@ -373,6 +373,7 @@
         .action-input { background: #e8f5e9; color: #388e3c; }
         .action-submit { background: #fff3e0; color: #f57c00; }
         .action-wait { background: #fce4ec; color: #c2185b; }
+        .action-verification { background: #fff9e6; color: #f57f17; }
 
         .summary-stats {
             display: grid;
@@ -391,19 +392,19 @@
         }
 
         .summary-stat:nth-child(1) {
-            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
         }
 
         .summary-stat:nth-child(2) {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
         }
 
         .summary-stat:nth-child(3) {
-            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         }
 
         .summary-stat:nth-child(4) {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
         }
 
         .summary-stat-value {
@@ -416,17 +417,47 @@
             font-size: 0.9em;
             opacity: 0.9;
         }
+
+        .test-result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .test-result-table thead {
+            background: #8b5cf6;
+            color: #ffffff;
+        }
+
+        .test-result-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+        }
+
+        .test-result-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .test-result-table tbody tr:hover {
+            background: #f8f9fa;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>Complete user invitation to organization by org admins</h1>
-            <div class="subtitle">Sign In & Workspace Management, User Invitation Testing</div>
+            <h1>ACM Test Report</h1>
+            <div class="subtitle">Sign In, Workspace Selection & Navigation Flow Testing</div>
             <div class="timestamp">Generated on: 2025-12-09 16:05:06</div>
         </div>
-
-
 
         <div class="stats-grid">
             <div class="stat-card">
@@ -438,7 +469,7 @@
                 <div class="stat-label">Passed</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number failed" id="failed-count">0</div>
+                <div class="stat-number failed" id="failed-count">1</div>
                 <div class="stat-label">Failed</div>
             </div>
             <div class="stat-card">
@@ -449,13 +480,13 @@
 
         <div class="test-sections">
             <div class="test-section">
-                <h2 class="section-title">🔐 SIM Test Scenario</h2>
+                <h2 class="section-title">🔐 ACM Test Scenario</h2>
                 <div class="test-item">
                     <div>
-                        <div class="test-name">Complete sign in process with dashboard navigation</div>
-                        <div class="test-description">End-to-end test covering sign-in, workspace selection, and dashboard navigation</div>
+                        <div class="test-name">Sign in and workspace selection flow</div>
+                        <div class="test-description">End-to-end test covering sign-in, workspace selection, navigation, and page load verification</div>
                     </div>
-                    <span class="status-badge status-passed" id="scenario-status">✅ Passed</span>
+                    <span class="status-badge status-failed" id="scenario-status">❌ Failed</span>
                 </div>
 
                 <div class="step-list">
@@ -493,16 +524,20 @@
                         <div class="step-status">Proceeds with workspace selection</div>
                     </div>
                     <div class="step-item passed">
-                        <div class="step-name">✅ And I click the navigation link</div>
-                        <div class="step-status">Navigates to dashboard section</div>
+                        <div class="step-name">✅ And I click the ACM navigation link</div>
+                        <div class="step-status">Navigates to ACM section</div>
                     </div>
                     <div class="step-item passed">
-                        <div class="step-name">✅ And I enter email in the individual email field</div>
-                        <div class="step-status">Enters email for individual account</div>
+                        <div class="step-name">✅ And I click the ACM element</div>
+                        <div class="step-status">Clicks ACM-specific element</div>
                     </div>
                     <div class="step-item passed">
-                        <div class="step-name">✅ And I click the form submit button</div>
-                        <div class="step-status">Submits the form</div>
+                        <div class="step-name">✅ And I select the ACM element</div>
+                        <div class="step-status">Selects ACM option</div>
+                    </div>
+                    <div class="step-item failed">
+                        <div class="step-name">❌ Then a new page should load for ACM test</div>
+                        <div class="step-status">Verifies new page loaded successfully</div>
                     </div>
                 </div>
             </div>
@@ -511,22 +546,39 @@
                 <h2 class="section-title">📊 Performance Summary</h2>
                 <div class="summary-stats">
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="avg-response-time">147107129.422</div>
+                        <div class="summary-stat-value" id="avg-response-time">1.833</div>
                         <div class="summary-stat-label">Avg Response Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="avg-load-time">1.280</div>
+                        <div class="summary-stat-value" id="avg-load-time">3.204</div>
                         <div class="summary-stat-label">Avg Load Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="total-exec-time">67.97</div>
+                        <div class="summary-stat-value" id="total-exec-time">18.20</div>
                         <div class="summary-stat-label">Total Execution Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="total-steps-count">12</div>
+                        <div class="summary-stat-value" id="total-steps-count">4</div>
                         <div class="summary-stat-label">Total Steps Tracked</div>
                     </div>
                 </div>
+            </div>
+
+            <div class="test-section">
+                <h2 class="section-title">📋 Test Results</h2>
+                <table class="test-result-table">
+                    <thead>
+                        <tr>
+                            <th>Test Name</th>
+                            <th>Status</th>
+                            <th>Duration (s)</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>ACM Test - New Page Load Verification</strong></td><td><span class='status-badge status-failed'>❌ FAILED</span></td><td>3.082s</td><td>FAILED: New page did not load after clicking Transfer Credits. URL before selection: &#39;https://yubanow.com/organization/credits&#39;, Current URL: &#39;https://yubanow.com/organization/credits&#39;. The page did not navigate to a new page as expected.</td></tr>
+                    </tbody>
+                </table>
             </div>
 
             <div class="test-section">
@@ -566,7 +618,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>1</strong></td><td>Open Yuba homepage</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>2.451s</td><td class='time-cell load-time'>0.098s</td><td class='time-cell total-time'>2.549s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>2</strong></td><td>Click Sign In button</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>30.506s</td><td class='time-cell load-time'>1.012s</td><td class='time-cell total-time'>31.518s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>3</strong></td><td>Enter email</td><td><span class='action-badge action-input'>input</span></td><td class='time-cell response-time'>0.452s</td><td class='time-cell load-time'>0.304s</td><td class='time-cell total-time'>0.756s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>4</strong></td><td>Enter password</td><td><span class='action-badge action-input'>input</span></td><td class='time-cell response-time'>0.127s</td><td class='time-cell load-time'>0.306s</td><td class='time-cell total-time'>0.433s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>5</strong></td><td>Click sign in submit button</td><td><span class='action-badge action-submit'>submit</span></td><td class='time-cell response-time'>0.106s</td><td class='time-cell load-time'>1.013s</td><td class='time-cell total-time'>1.119s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>6</strong></td><td>Wait for navigation to choose workspace page</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>10.147s</td><td class='time-cell load-time'>0.000s</td><td class='time-cell total-time'>10.147s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>7</strong></td><td>Click element: /html/body/div[1]/div/div/div[2]/div[1]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>0.116s</td><td class='time-cell load-time'>2.010s</td><td class='time-cell total-time'>2.126s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>8</strong></td><td>Click button: /html/body/div[1]/div/div/div[3]/button[1]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>0.098s</td><td class='time-cell load-time'>1.006s</td><td class='time-cell total-time'>1.104s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>9</strong></td><td>Click ACM navigation link: /html/body/div[1]/aside/div[2]/nav/ul/li[6]/a</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>2.241s</td><td class='time-cell load-time'>4.570s</td><td class='time-cell total-time'>6.811s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>10</strong></td><td>Click ACM element: //*[@id=&quot;radix-«r1k»&quot;]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>2.119s</td><td class='time-cell load-time'>2.014s</td><td class='time-cell total-time'>4.133s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>11</strong></td><td>Select ACM element: //*[@id=&quot;radix-«r1l»&quot;]/div[3]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>1.139s</td><td class='time-cell load-time'>3.028s</td><td class='time-cell total-time'>4.167s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>12</strong></td><td>Verify new page loaded for ACM test</td><td><span class='action-badge action-verification'>verification</span></td><td class='time-cell response-time'>1765285503.565s</td><td class='time-cell load-time'>0.000s</td><td class='time-cell total-time'>3.090s</td><td><span class='status-badge status-failed'>❌ FAILED</span></td></tr>
+                        <tr><td><strong>1</strong></td><td>Click ACM navigation link: /html/body/div[1]/aside/div[2]/nav/ul/li[6]/a</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>2.241s</td><td class='time-cell load-time'>4.570s</td><td class='time-cell total-time'>6.811s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>2</strong></td><td>Click ACM element: //*[@id=&quot;radix-«r1k»&quot;]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>2.119s</td><td class='time-cell load-time'>2.014s</td><td class='time-cell total-time'>4.133s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>3</strong></td><td>Select ACM element: //*[@id=&quot;radix-«r1l»&quot;]/div[3]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>1.139s</td><td class='time-cell load-time'>3.028s</td><td class='time-cell total-time'>4.167s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>4</strong></td><td>Verify new page loaded for ACM test</td><td><span class='action-badge action-verification'>verification</span></td><td class='time-cell response-time'>1765285503.565s</td><td class='time-cell load-time'>0.000s</td><td class='time-cell total-time'>3.090s</td><td><span class='status-badge status-failed'>❌ FAILED</span></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -575,20 +627,20 @@
                 <h2 class="section-title">📊 Test Execution Metrics</h2>
                 <div class="performance-metrics">
                     <div class="metric-item">
-                        <div class="metric-value" id="total-steps">12</div>
+                        <div class="metric-value" id="total-steps">4</div>
                         <div class="metric-label">Total Steps</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value" id="execution-time">1m 7s</div>
+                        <div class="metric-value" id="execution-time">18.20s</div>
                         <div class="metric-label">Execution Time</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value" id="success-rate">100%</div>
+                        <div class="metric-value" id="success-rate">0%</div>
                         <div class="metric-label">Success Rate</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value">✅</div>
-                        <div class="metric-label">All Steps Passed</div>
+                        <div class="metric-value">❌_FINAL</div>
+                        <div class="metric-label">Test Status</div>
                     </div>
                 </div>
             </div>
@@ -620,36 +672,14 @@
             </div>
         </div>
 
-        <div class="test-section">
-            <h2 class="section-title">🎯 Test Coverage</h2>
-            <div class="performance-metrics">
-                <div class="metric-item">
-                    <div class="metric-value">✅</div>
-                    <div class="metric-label">Sign In Flow</div>
-                </div>
-                <div class="metric-item">
-                    <div class="metric-value">✅</div>
-                    <div class="metric-label">Workspace Selection</div>
-                </div>
-                <div class="metric-item">
-                    <div class="metric-value">✅</div>
-                    <div class="metric-label">Dashboard Navigation</div>
-                </div>
-                <div class="metric-item">
-                    <div class="metric-value">✅</div>
-                    <div class="metric-label">Form Submission</div>
-                </div>
-            </div>
-        </div>
-
         <div class="footer">
-            <p><strong>Yuba SIM (Send Invitation) Testing Suite</strong> | Automated with Selenium WebDriver & Cucumber BDD</p>
-            <p>Generated by SIM HTML Reporter | Framework: Maven + JUnit Platform</p>
+            <p> <strong>Yuba ACM Testing Suite</strong> | Automated with Selenium WebDriver & Cucumber BDD</p>
+            <p> Framework: Maven + JUnit Platform</p>
             <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
                 Tested and report prepared by <a href="https://tewodrosberhanu.com" target="_blank" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Tewodros</a>
                 <span style="color: #64748b;">|</span>
                 <a href="https://tewodrosberhanu.com" target="_blank" style="color: #3b82f6; text-decoration: none;">
-                    <span style="display: inline-block; margin-left: 4px;">www.tewodrosberhanu.com</span>
+                    <span style="display: inline-block; margin-left: 4px;">🌐 Website</span>
                 </a>
             </p>
         </div>
@@ -658,17 +688,17 @@
     <script>
         // Performance data
         const performanceData = {
-  stepLabels: ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5", "Step 6", "Step 7", "Step 8", "Step 9", "Step 10", "Step 11", "Step 12"],
-  responseTimes: [2.451, 30.506, 0.452, 0.127, 0.106, 10.147, 0.116, 0.098, 2.241, 2.119, 1.139, 1765285503.565],
-  loadTimes: [0.098, 1.012, 0.304, 0.306, 1.013, 0.000, 2.010, 1.006, 4.570, 2.014, 3.028, 0.000],
-  totalTimes: [2.549, 31.518, 0.756, 0.433, 1.119, 10.147, 2.126, 1.104, 6.811, 4.133, 4.167, 3.090]
+  stepLabels: ["Step 1", "Step 2", "Step 3", "Step 4"],
+  responseTimes: [2.241, 2.119, 1.139, 1765285503.565],
+  loadTimes: [4.570, 2.014, 3.028, 0.000],
+  totalTimes: [6.811, 4.133, 4.167, 3.090]
 };
 
         // Update summary stats
-        document.getElementById('avg-response-time').textContent = 147107129.422 + 's';
-        document.getElementById('avg-load-time').textContent = 1.280 + 's';
-        document.getElementById('total-exec-time').textContent = 67.97 + 's';
-        document.getElementById('total-steps-count').textContent = 12;
+        document.getElementById('avg-response-time').textContent = 1.833 + 's';
+        document.getElementById('avg-load-time').textContent = 3.204 + 's';
+        document.getElementById('total-exec-time').textContent = 18.20 + 's';
+        document.getElementById('total-steps-count').textContent = 4;
 
         // Chart configuration
         const chartOptions = {
@@ -702,71 +732,73 @@
         };
 
         // Response Time Chart
-        const responseCtx = document.getElementById('responseTimeChart').getContext('2d');
-        new Chart(responseCtx, {
-            type: 'bar',
-            data: {
-                labels: performanceData.stepLabels,
-                datasets: [{
-                    label: 'Response Time (s)',
-                    data: performanceData.responseTimes,
-                    backgroundColor: 'rgba(52, 152, 219, 0.7)',
-                    borderColor: 'rgba(52, 152, 219, 1)',
-                    borderWidth: 2
-                }]
-            },
-            options: chartOptions
-        });
-
-        // Load Time Chart
-        const loadCtx = document.getElementById('loadTimeChart').getContext('2d');
-        new Chart(loadCtx, {
-            type: 'bar',
-            data: {
-                labels: performanceData.stepLabels,
-                datasets: [{
-                    label: 'Load Time (s)',
-                    data: performanceData.loadTimes,
-                    backgroundColor: 'rgba(230, 126, 34, 0.7)',
-                    borderColor: 'rgba(230, 126, 34, 1)',
-                    borderWidth: 2
-                }]
-            },
-            options: chartOptions
-        });
-
-        // Total Time Comparison Chart
-        const totalCtx = document.getElementById('totalTimeChart').getContext('2d');
-        new Chart(totalCtx, {
-            type: 'line',
-            data: {
-                labels: performanceData.stepLabels,
-                datasets: [
-                    {
+        if (performanceData.stepLabels && performanceData.stepLabels.length > 0) {
+            const responseCtx = document.getElementById('responseTimeChart').getContext('2d');
+            new Chart(responseCtx, {
+                type: 'bar',
+                data: {
+                    labels: performanceData.stepLabels,
+                    datasets: [{
                         label: 'Response Time (s)',
                         data: performanceData.responseTimes,
-                        borderColor: 'rgba(52, 152, 219, 1)',
-                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
-                        tension: 0.4
-                    },
-                    {
+                        backgroundColor: 'rgba(139, 92, 246, 0.7)',
+                        borderColor: 'rgba(139, 92, 246, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: chartOptions
+            });
+
+            // Load Time Chart
+            const loadCtx = document.getElementById('loadTimeChart').getContext('2d');
+            new Chart(loadCtx, {
+                type: 'bar',
+                data: {
+                    labels: performanceData.stepLabels,
+                    datasets: [{
                         label: 'Load Time (s)',
                         data: performanceData.loadTimes,
-                        borderColor: 'rgba(230, 126, 34, 1)',
-                        backgroundColor: 'rgba(230, 126, 34, 0.1)',
-                        tension: 0.4
-                    },
-                    {
-                        label: 'Total Time (s)',
-                        data: performanceData.totalTimes,
-                        borderColor: 'rgba(39, 174, 96, 1)',
-                        backgroundColor: 'rgba(39, 174, 96, 0.1)',
-                        tension: 0.4
-                    }
-                ]
-            },
-            options: chartOptions
-        });
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
+                        borderWidth: 2
+                    }]
+                },
+                options: chartOptions
+            });
+
+            // Total Time Comparison Chart
+            const totalCtx = document.getElementById('totalTimeChart').getContext('2d');
+            new Chart(totalCtx, {
+                type: 'line',
+                data: {
+                    labels: performanceData.stepLabels,
+                    datasets: [
+                        {
+                            label: 'Response Time (s)',
+                            data: performanceData.responseTimes,
+                            borderColor: 'rgba(139, 92, 246, 1)',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Load Time (s)',
+                            data: performanceData.loadTimes,
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Total Time (s)',
+                            data: performanceData.totalTimes,
+                            borderColor: 'rgba(16, 185, 129, 1)',
+                            backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: chartOptions
+            });
+        }
     </script>
 </body>
 </html>

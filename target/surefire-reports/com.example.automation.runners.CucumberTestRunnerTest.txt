@@ -1,4 +1,11 @@
 -------------------------------------------------------------------------------
 Test set: com.example.automation.runners.CucumberTestRunnerTest
 -------------------------------------------------------------------------------
-Tests run: 15, Failures: 0, Errors: 0, Skipped: 14, Time elapsed: 64.10 s -- in com.example.automation.runners.CucumberTestRunnerTest
+Tests run: 16, Failures: 1, Errors: 0, Skipped: 15, Time elapsed: 70.11 s <<< FAILURE! -- in com.example.automation.runners.CucumberTestRunnerTest
+Yuba SIM.Sign in and workspace selection flow -- Time elapsed: 68.20 s <<< FAILURE!
+org.opentest4j.AssertionFailedError: 
+[TEST FAILED: A new page should have loaded after clicking the Transfer Credits menu item, but no new page was loaded. URL before selection: 'https://yubanow.com/organization/credits', Current URL: 'https://yubanow.com/organization/credits'. The test is marked as FAILED because the expected page navigation did not occur.] 
+Expecting value to be true but was false
+	at com.example.automation.steps.YubaAcmSteps.a_new_page_should_load_for_acm_test(YubaAcmSteps.java:494)
+	at ✽.a new page should load for ACM test(classpath:features/yuba_sim.feature:34)
+

@@ -59,6 +59,13 @@ public class Hooks {
             System.err.println("Failed to generate SIM report: " + e.getMessage());
         }
         
+        // Generate ACM-specific HTML report
+        try {
+            com.example.automation.reporting.AcmHtmlReportGenerator.generateAcmReport();
+        } catch (Exception e) {
+            System.err.println("Failed to generate ACM report: " + e.getMessage());
+        }
+        
         // Quit driver only once at the end of all scenarios
         if (driverInitialized) {
             DriverFactory.quitDriver();

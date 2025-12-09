@@ -308,16 +308,28 @@ public class YubaSimSteps {
         long responseTime = System.currentTimeMillis();
         PerformanceTracker.recordResponseTime(stepId, actionStartTime);
         
-        // Wait for navigation to complete
+        // Wait for navigation to complete and the individual email field to be present
         try {
-            Thread.sleep(1500);
+            // Wait for document ready state
             extendedWait.until(driver -> {
                 JavascriptExecutor js = (JavascriptExecutor) driver;
                 String readyState = (String) js.executeScript("return document.readyState");
                 return "complete".equals(readyState);
             });
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
+            
+            // Wait for the individual email field to be present and visible
+            // This ensures the form has loaded before proceeding to the next step
+            extendedWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='individual-email']")));
+            
+            // Additional wait to ensure the field is fully rendered and ready
+            extendedWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//*[@id='individual-email']")));
+            
+            System.out.println("Navigation completed and individual email field is ready");
+        } catch (org.openqa.selenium.TimeoutException e) {
+            System.err.println("Timeout waiting for individual email field after navigation. Current URL: " + driver.getCurrentUrl());
+            throw new org.openqa.selenium.TimeoutException(
+                "Individual email field not found after clicking navigation link. " +
+                "The form may not have loaded completely.", e);
         }
         
         long loadEndTime = System.currentTimeMillis();

@@ -1,5 +1,6 @@
 package com.example.automation.steps;
 
+import com.example.automation.reporting.PerformanceTracker;
 import com.example.automation.support.DriverFactory;
 import io.cucumber.java.en.And;
 import java.time.Duration;
@@ -18,6 +19,13 @@ public class YubaSimSteps {
 
     @And("I wait for navigation to choose workspace page")
     public void i_wait_for_navigation_to_choose_workspace_page() {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Wait for navigation to choose workspace page",
+            "Waits for navigation to workspace selection page",
+            "navigation"
+        );
+        
         // Wait for navigation to the choose-workspace page
         WebDriverWait extendedWait = new WebDriverWait(driver, Duration.ofSeconds(60));
         
@@ -94,9 +102,20 @@ public class YubaSimSteps {
                 }
                 
                 System.out.println("Successfully navigated to choose-workspace page: " + driver.getCurrentUrl());
+                
+                // Record response time (when URL changed)
+                long responseTime = System.currentTimeMillis();
+                PerformanceTracker.recordResponseTime(stepId, actionStartTime);
+                
+                // Record load time (when page fully loaded)
+                long loadEndTime = System.currentTimeMillis();
+                PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
             } else {
                 System.out.println("WARNING: Not on choose-workspace page. Current URL: " + currentUrl);
                 System.out.println("Page body text preview: " + driver.findElement(By.tagName("body")).getText().substring(0, Math.min(200, driver.findElement(By.tagName("body")).getText().length())));
+                
+                long loadEndTime = System.currentTimeMillis();
+                PerformanceTracker.completeStep(stepId, actionStartTime, loadEndTime);
             }
             
         } catch (org.openqa.selenium.TimeoutException e) {
@@ -114,6 +133,7 @@ public class YubaSimSteps {
             System.err.println("Page Title: " + pageTitle);
             System.err.println("Page Body Preview: " + bodyText);
             
+            PerformanceTracker.failStep(stepId, actionStartTime);
             throw new org.openqa.selenium.TimeoutException(
                 "Failed to navigate to choose-workspace page. " +
                 "Current URL: " + finalUrl + ". " +
@@ -150,6 +170,13 @@ public class YubaSimSteps {
 
     @And("I click the element {string}")
     public void i_click_the_element(String xpath) {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Click element: " + xpath,
+            "Clicks an element by XPath",
+            "click"
+        );
+        
         // Wait for the element to be present and visible on the choose-workspace page
         WebDriverWait extendedWait = new WebDriverWait(driver, Duration.ofSeconds(30));
         
@@ -162,8 +189,10 @@ public class YubaSimSteps {
         // Wait for element to be clickable
         element = extendedWait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
         
-        // Click the element
+        // Click the element - response time is when click completes
         element.click();
+        long responseTime = System.currentTimeMillis();
+        PerformanceTracker.recordResponseTime(stepId, actionStartTime);
         
         // Wait for page to stabilize after clicking - wait for document ready state
         extendedWait.until(driver -> {
@@ -179,11 +208,21 @@ public class YubaSimSteps {
             Thread.currentThread().interrupt();
         }
         
+        long loadEndTime = System.currentTimeMillis();
+        PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
+        
         System.out.println("Successfully clicked element at: " + xpath);
     }
 
     @And("I click the button {string}")
     public void i_click_the_button(String xpath) {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Click button: " + xpath,
+            "Clicks a button by XPath",
+            "click"
+        );
+        
         // Use extended wait for button to appear (may need more time after element selection)
         WebDriverWait extendedWait = new WebDriverWait(driver, Duration.ofSeconds(30));
         
@@ -197,8 +236,20 @@ public class YubaSimSteps {
             // Wait for button to be clickable with extended timeout
             button = extendedWait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
             
-            // Click the button
+            // Click the button - response time is when click completes
             button.click();
+            long responseTime = System.currentTimeMillis();
+            PerformanceTracker.recordResponseTime(stepId, actionStartTime);
+            
+            // Wait for page to stabilize
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            
+            long loadEndTime = System.currentTimeMillis();
+            PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
         } catch (org.openqa.selenium.TimeoutException e) {
             // If button not found, try to find any button in the parent container as fallback
             System.out.println("Button not found at: " + xpath);
@@ -213,12 +264,18 @@ public class YubaSimSteps {
                     WebElement firstButton = extendedWait.until(ExpectedConditions.elementToBeClickable(buttons.get(0)));
                     ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", firstButton);
                     firstButton.click();
+                    
+                    long responseTime = System.currentTimeMillis();
+                    PerformanceTracker.recordResponseTime(stepId, actionStartTime);
+                    long loadEndTime = System.currentTimeMillis();
+                    PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
                     return;
                 }
             } catch (Exception fallbackException) {
                 // Fallback failed, throw original exception
             }
             
+            PerformanceTracker.failStep(stepId, actionStartTime);
             throw new org.openqa.selenium.TimeoutException(
                 "Button not found at XPath: " + xpath + 
                 ". The element may not exist, or the page structure may have changed after element selection.", e);
@@ -227,6 +284,13 @@ public class YubaSimSteps {
 
     @And("I click the navigation link {string}")
     public void i_click_the_navigation_link(String xpath) {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Click navigation link: " + xpath,
+            "Clicks a navigation link by XPath",
+            "navigation"
+        );
+        
         // Use extended wait for navigation link (may need time after button click)
         WebDriverWait extendedWait = new WebDriverWait(driver, Duration.ofSeconds(20));
         
@@ -239,12 +303,36 @@ public class YubaSimSteps {
         // Wait for navigation link to be clickable with extended timeout
         navLink = extendedWait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
         
-        // Click the navigation link
+        // Click the navigation link - response time is when click completes
         navLink.click();
+        long responseTime = System.currentTimeMillis();
+        PerformanceTracker.recordResponseTime(stepId, actionStartTime);
+        
+        // Wait for navigation to complete
+        try {
+            Thread.sleep(1500);
+            extendedWait.until(driver -> {
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                String readyState = (String) js.executeScript("return document.readyState");
+                return "complete".equals(readyState);
+            });
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        long loadEndTime = System.currentTimeMillis();
+        PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
     }
 
     @And("I enter email {string} in the individual email field")
     public void i_enter_email_in_the_individual_email_field(String email) {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Enter email in individual email field",
+            "Enters email address in the individual email input field",
+            "input"
+        );
+        
         // Wait for the individual email field to be present and visible
         WebElement emailField = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='individual-email']")));
         
@@ -252,20 +340,57 @@ public class YubaSimSteps {
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", emailField);
         wait.until(ExpectedConditions.elementToBeClickable(emailField));
         
+        // Input action - response time is when input completes
         emailField.clear();
         emailField.sendKeys(email);
+        long responseTime = System.currentTimeMillis();
+        PerformanceTracker.recordResponseTime(stepId, actionStartTime);
+        
+        // Small delay for field validation/processing
+        try {
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        long loadEndTime = System.currentTimeMillis();
+        PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
     }
 
     @And("I click the form submit button {string}")
     public void i_click_the_form_submit_button(String xpath) {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Click form submit button: " + xpath,
+            "Submits the form by clicking the submit button",
+            "submit"
+        );
+        
         // Wait for the form submit button to be clickable
         WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
         
         // Scroll to the button
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", submitButton);
         
-        // Click the submit button
+        // Click the submit button - response time is when form submission starts
         submitButton.click();
+        long responseTime = System.currentTimeMillis();
+        PerformanceTracker.recordResponseTime(stepId, actionStartTime);
+        
+        // Wait for form submission to process
+        try {
+            Thread.sleep(2000);
+            wait.until(driver -> {
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                String readyState = (String) js.executeScript("return document.readyState");
+                return "complete".equals(readyState);
+            });
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        long loadEndTime = System.currentTimeMillis();
+        PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
     }
 }
 

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Yuba SIM Test Report</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -252,14 +253,124 @@
             font-size: 0.9em;
             margin-top: 5px;
         }
+
+        .chart-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            height: 400px;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 350px;
+            margin-top: 20px;
+        }
+
+        .performance-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .performance-table thead {
+            background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+            color: white;
+        }
+
+        .performance-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 0.5px;
+        }
+
+        .performance-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        .performance-table tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        .performance-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .time-cell {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .response-time {
+            color: #3498db;
+        }
+
+        .load-time {
+            color: #e67e22;
+        }
+
+        .total-time {
+            color: #27ae60;
+        }
+
+        .action-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .action-navigation { background: #e3f2fd; color: #1976d2; }
+        .action-click { background: #f3e5f5; color: #7b1fa2; }
+        .action-input { background: #e8f5e9; color: #388e3c; }
+        .action-submit { background: #fff3e0; color: #f57c00; }
+        .action-wait { background: #fce4ec; color: #c2185b; }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .summary-stat {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .summary-stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .summary-stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>🎯 Yuba SIM Test Report</h1>
-            <div class="subtitle">Sign In & Workspace Management Testing</div>
-            <div class="timestamp">Generated on: 2025-12-09 11:47:56</div>
+            <h1>Complete user invitation to organization by org admins</h1>
+            <div class="subtitle">Sign In & Workspace Management, User Invitation Testing</div>
+            <div class="timestamp">Generated on: 2025-12-09 12:07:23</div>
         </div>
 
 
@@ -344,6 +455,70 @@
             </div>
 
             <div class="test-section">
+                <h2 class="section-title">📊 Performance Summary</h2>
+                <div class="summary-stats">
+                    <div class="summary-stat">
+                        <div class="summary-stat-value" id="avg-response-time">18.547</div>
+                        <div class="summary-stat-label">Avg Response Time (s)</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat-value" id="avg-load-time">0.889</div>
+                        <div class="summary-stat-label">Avg Load Time (s)</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat-value" id="total-exec-time">213.81</div>
+                        <div class="summary-stat-label">Total Execution Time (s)</div>
+                    </div>
+                    <div class="summary-stat">
+                        <div class="summary-stat-value" id="total-steps-count">11</div>
+                        <div class="summary-stat-label">Total Steps Tracked</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-section">
+                <h2 class="section-title">📈 Performance Charts</h2>
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 15px; color: #2c3e50;">Response Times by Step</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="responseTimeChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 15px; color: #2c3e50;">Load Times by Step</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="loadTimeChart"></canvas>
+                    </div>
+                </div>
+                <div class="chart-container">
+                    <h3 style="margin-bottom: 15px; color: #2c3e50;">Total Time Comparison</h3>
+                    <div class="chart-wrapper">
+                        <canvas id="totalTimeChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <div class="test-section">
+                <h2 class="section-title">📋 Detailed Performance Metrics</h2>
+                <table class="performance-table">
+                    <thead>
+                        <tr>
+                            <th>Step #</th>
+                            <th>Step Name</th>
+                            <th>Action Type</th>
+                            <th>Response Time (s)</th>
+                            <th>Load Time (s)</th>
+                            <th>Total Time (s)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td><strong>1</strong></td><td>Open Yuba homepage</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>158.482s</td><td class='time-cell load-time'>0.060s</td><td class='time-cell total-time'>158.542s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>2</strong></td><td>Click Sign In button</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>30.617s</td><td class='time-cell load-time'>1.022s</td><td class='time-cell total-time'>31.639s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>3</strong></td><td>Enter email</td><td><span class='action-badge action-input'>input</span></td><td class='time-cell response-time'>0.603s</td><td class='time-cell load-time'>0.302s</td><td class='time-cell total-time'>0.905s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>4</strong></td><td>Enter password</td><td><span class='action-badge action-input'>input</span></td><td class='time-cell response-time'>0.223s</td><td class='time-cell load-time'>0.307s</td><td class='time-cell total-time'>0.530s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>5</strong></td><td>Click sign in submit button</td><td><span class='action-badge action-submit'>submit</span></td><td class='time-cell response-time'>0.205s</td><td class='time-cell load-time'>1.010s</td><td class='time-cell total-time'>1.215s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>6</strong></td><td>Wait for navigation to choose workspace page</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>6.486s</td><td class='time-cell load-time'>0.000s</td><td class='time-cell total-time'>6.486s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>7</strong></td><td>Click element: /html/body/div[1]/div/div/div[2]/div[1]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>0.213s</td><td class='time-cell load-time'>2.021s</td><td class='time-cell total-time'>2.234s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>8</strong></td><td>Click button: /html/body/div[1]/div/div/div[3]/button[1]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>0.224s</td><td class='time-cell load-time'>1.012s</td><td class='time-cell total-time'>1.236s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>9</strong></td><td>Click navigation link: /html/body/div[1]/aside/div[2]/nav/ul/li[2]/a</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>2.346s</td><td class='time-cell load-time'>1.520s</td><td class='time-cell total-time'>3.866s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>10</strong></td><td>Enter email in individual email field</td><td><span class='action-badge action-input'>input</span></td><td class='time-cell response-time'>4.376s</td><td class='time-cell load-time'>0.510s</td><td class='time-cell total-time'>4.886s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>11</strong></td><td>Click form submit button: /html/body/div[1]/div/main/div/div[2]/div[1]/div/div[2]/div/div/div/div[2]/form/div[3]/div[2]/div[1]/div/button</td><td><span class='action-badge action-submit'>submit</span></td><td class='time-cell response-time'>0.243s</td><td class='time-cell load-time'>2.016s</td><td class='time-cell total-time'>2.259s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="test-section">
                 <h2 class="section-title">📊 Test Execution Metrics</h2>
                 <div class="performance-metrics">
                     <div class="metric-item">
@@ -351,7 +526,7 @@
                         <div class="metric-label">Total Steps</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value" id="execution-time">~2m</div>
+                        <div class="metric-value" id="execution-time">213.81_FORMATTED</div>
                         <div class="metric-label">Execution Time</div>
                     </div>
                     <div class="metric-item">
@@ -419,5 +594,119 @@
             <p>Generated by SIM HTML Reporter | Framework: Maven + JUnit Platform</p>
         </div>
     </div>
+
+    <script>
+        // Performance data
+        const performanceData = {
+  stepLabels: ["Step 1", "Step 2", "Step 3", "Step 4", "Step 5", "Step 6", "Step 7", "Step 8", "Step 9", "Step 10", "Step 11"],
+  responseTimes: [158.482, 30.617, 0.603, 0.223, 0.205, 6.486, 0.213, 0.224, 2.346, 4.376, 0.243],
+  loadTimes: [0.060, 1.022, 0.302, 0.307, 1.010, 0.000, 2.021, 1.012, 1.520, 0.510, 2.016],
+  totalTimes: [158.542, 31.639, 0.905, 0.530, 1.215, 6.486, 2.234, 1.236, 3.866, 4.886, 2.259]
+};
+
+        // Update summary stats
+        document.getElementById('avg-response-time').textContent = 18.547 + 's';
+        document.getElementById('avg-load-time').textContent = 0.889 + 's';
+        document.getElementById('total-exec-time').textContent = 213.81 + 's';
+        document.getElementById('total-steps-count').textContent = 11;
+
+        // Chart configuration
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Time (seconds)'
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Step Number'
+                    }
+                }
+            }
+        };
+
+        // Response Time Chart
+        const responseCtx = document.getElementById('responseTimeChart').getContext('2d');
+        new Chart(responseCtx, {
+            type: 'bar',
+            data: {
+                labels: performanceData.stepLabels,
+                datasets: [{
+                    label: 'Response Time (s)',
+                    data: performanceData.responseTimes,
+                    backgroundColor: 'rgba(52, 152, 219, 0.7)',
+                    borderColor: 'rgba(52, 152, 219, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Load Time Chart
+        const loadCtx = document.getElementById('loadTimeChart').getContext('2d');
+        new Chart(loadCtx, {
+            type: 'bar',
+            data: {
+                labels: performanceData.stepLabels,
+                datasets: [{
+                    label: 'Load Time (s)',
+                    data: performanceData.loadTimes,
+                    backgroundColor: 'rgba(230, 126, 34, 0.7)',
+                    borderColor: 'rgba(230, 126, 34, 1)',
+                    borderWidth: 2
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Total Time Comparison Chart
+        const totalCtx = document.getElementById('totalTimeChart').getContext('2d');
+        new Chart(totalCtx, {
+            type: 'line',
+            data: {
+                labels: performanceData.stepLabels,
+                datasets: [
+                    {
+                        label: 'Response Time (s)',
+                        data: performanceData.responseTimes,
+                        borderColor: 'rgba(52, 152, 219, 1)',
+                        backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Load Time (s)',
+                        data: performanceData.loadTimes,
+                        borderColor: 'rgba(230, 126, 34, 1)',
+                        backgroundColor: 'rgba(230, 126, 34, 0.1)',
+                        tension: 0.4
+                    },
+                    {
+                        label: 'Total Time (s)',
+                        data: performanceData.totalTimes,
+                        borderColor: 'rgba(39, 174, 96, 1)',
+                        backgroundColor: 'rgba(39, 174, 96, 0.1)',
+                        tension: 0.4
+                    }
+                ]
+            },
+            options: chartOptions
+        });
+    </script>
 </body>
 </html>

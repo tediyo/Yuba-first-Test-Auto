@@ -17,6 +17,8 @@ public class TestResultsCollector {
         public String category;
         public String details;
         public long timestamp;
+        public long responseTime; // Response time in milliseconds
+        public long loadTime; // Load time in milliseconds
         
         public TestResult(String testName, String status, long duration, String category, String details) {
             this.testName = testName;
@@ -25,6 +27,19 @@ public class TestResultsCollector {
             this.category = category;
             this.details = details;
             this.timestamp = System.currentTimeMillis();
+            this.responseTime = 0;
+            this.loadTime = duration;
+        }
+        
+        public TestResult(String testName, String status, long duration, String category, String details, long responseTime, long loadTime) {
+            this.testName = testName;
+            this.status = status;
+            this.duration = duration;
+            this.category = category;
+            this.details = details;
+            this.timestamp = System.currentTimeMillis();
+            this.responseTime = responseTime;
+            this.loadTime = loadTime;
         }
     }
     
@@ -37,6 +52,17 @@ public class TestResultsCollector {
         }
         
         System.out.println("📊 Test result recorded: " + testName + " - " + status + " (" + (duration/1000.0) + "s)");
+    }
+    
+    public static void recordTestResult(String testName, String status, long duration, String category, String details, long responseTime, long loadTime) {
+        TestResult result = new TestResult(testName, status, duration, category, details, responseTime, loadTime);
+        testResults.put(testName, result);
+        
+        if (!testExecutionOrder.contains(testName)) {
+            testExecutionOrder.add(testName);
+        }
+        
+        System.out.println("📊 Test result recorded: " + testName + " - " + status + " (Response: " + (responseTime/1000.0) + "s, Load: " + (loadTime/1000.0) + "s, Total: " + (duration/1000.0) + "s)");
     }
     
     public static Map<String, TestResult> getAllResults() {

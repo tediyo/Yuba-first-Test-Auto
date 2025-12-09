@@ -2,6 +2,7 @@ package com.example.automation.steps;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.example.automation.reporting.PerformanceTracker;
 import com.example.automation.support.DriverFactory;
 import com.example.automation.reporting.TestResultsCollector;
 import io.cucumber.java.en.Given;
@@ -27,19 +28,71 @@ public class YubaSignInSteps {
 
     @Given("I open the Yuba homepage")
     public void i_open_the_yuba_homepage() {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Open Yuba homepage",
+            "Navigates to and loads the Yuba website homepage",
+            "navigation"
+        );
+        
         driver.navigate().to(YUBA_URL);
+        long responseTime = System.currentTimeMillis();
+        PerformanceTracker.recordResponseTime(stepId, actionStartTime);
+        
         wait.until(ExpectedConditions.presenceOfElementLocated(By.tagName("body")));
+        
+        // Wait for page to fully load
+        wait.until(driver -> {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            String readyState = (String) js.executeScript("return document.readyState");
+            return "complete".equals(readyState);
+        });
+        
+        long loadEndTime = System.currentTimeMillis();
+        PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
     }
 
     @When("I click the Sign In button")
     public void i_click_the_sign_in_button() {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Click Sign In button",
+            "Clicks the Sign In button on the homepage",
+            "click"
+        );
+        
         WebElement signIn = locateSignInElement();
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", signIn);
         wait.until(ExpectedConditions.elementToBeClickable(signIn)).click();
+        
+        long responseTime = System.currentTimeMillis();
+        PerformanceTracker.recordResponseTime(stepId, actionStartTime);
+        
+        // Wait for navigation to sign-in page
+        try {
+            Thread.sleep(1000);
+            wait.until(driver -> {
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                String readyState = (String) js.executeScript("return document.readyState");
+                return "complete".equals(readyState);
+            });
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        long loadEndTime = System.currentTimeMillis();
+        PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
     }
 
     @When("I enter my email {string}")
     public void i_enter_my_email(String email) {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Enter email",
+            "Enters email address in the email input field",
+            "input"
+        );
+        
         // Wait for the email field to be present and visible
         WebElement emailField = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='email']")));
         
@@ -49,10 +102,30 @@ public class YubaSignInSteps {
         
         emailField.clear();
         emailField.sendKeys(email);
+        
+        long responseTime = System.currentTimeMillis();
+        PerformanceTracker.recordResponseTime(stepId, actionStartTime);
+        
+        // Small delay for field validation
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        long loadEndTime = System.currentTimeMillis();
+        PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
     }
 
     @When("I enter my password {string}")
     public void i_enter_my_password(String password) {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Enter password",
+            "Enters password in the password input field",
+            "input"
+        );
+        
         // Wait for the password field to be present and visible
         WebElement passwordField = wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//*[@id='password']")));
         
@@ -62,10 +135,30 @@ public class YubaSignInSteps {
         
         passwordField.clear();
         passwordField.sendKeys(password);
+        
+        long responseTime = System.currentTimeMillis();
+        PerformanceTracker.recordResponseTime(stepId, actionStartTime);
+        
+        // Small delay for field validation
+        try {
+            Thread.sleep(300);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        long loadEndTime = System.currentTimeMillis();
+        PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
     }
 
     @When("I click the sign in submit button")
     public void i_click_the_sign_in_submit_button() {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Click sign in submit button",
+            "Submits the sign-in form",
+            "submit"
+        );
+        
         // Wait for the sign in submit button to be clickable
         WebElement submitButton = wait.until(ExpectedConditions.elementToBeClickable(
             By.xpath("/html/body/div[1]/div/div/div[1]/div/div/div[2]/form/div/div[4]/button")));
@@ -73,6 +166,19 @@ public class YubaSignInSteps {
         // Scroll to the button and click it
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", submitButton);
         submitButton.click();
+        
+        long responseTime = System.currentTimeMillis();
+        PerformanceTracker.recordResponseTime(stepId, actionStartTime);
+        
+        // Wait for form submission to process (navigation will be tracked separately)
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        long loadEndTime = System.currentTimeMillis();
+        PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
     }
 
     @Then("I should be signed in successfully")

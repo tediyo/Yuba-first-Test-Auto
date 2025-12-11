@@ -13,9 +13,9 @@ public class PerformanceTracker {
     public static class PerformanceMetric {
         public String stepName;
         public String stepDescription;
-        public long responseTime; // Time from action start to response received
-        public long loadTime; // Time for page/content to fully load
-        public long totalTime; // Total time (responseTime + loadTime)
+        public long responseTime; // Time from action start to response received (in milliseconds)
+        public long loadTime; // Time for page/content to fully load (in milliseconds)
+        public long totalTime; // Total time (responseTime + loadTime) (in milliseconds)
         public long timestamp;
         public String actionType; // "navigation", "click", "input", "submit", etc.
         public String status; // "PASSED", "FAILED", "SKIPPED"
@@ -26,6 +26,10 @@ public class PerformanceTracker {
             this.actionType = actionType;
             this.timestamp = System.currentTimeMillis();
             this.status = "PASSED";
+            // Initialize times to 0 (will be set by recordResponseTime and completeStep)
+            this.responseTime = 0;
+            this.loadTime = 0;
+            this.totalTime = 0;
         }
     }
     
@@ -35,7 +39,6 @@ public class PerformanceTracker {
     public static String startStep(String stepName, String stepDescription, String actionType) {
         String stepId = stepName + "_" + System.currentTimeMillis();
         PerformanceMetric metric = new PerformanceMetric(stepName, stepDescription, actionType);
-        metric.responseTime = System.currentTimeMillis();
         stepMetrics.put(stepId, metric);
         
         if (!stepExecutionOrder.contains(stepId)) {

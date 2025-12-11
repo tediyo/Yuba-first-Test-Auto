@@ -1,4 +1,3 @@
-@sim
 Feature: Yuba SIM
   As a user
   I want to complete the sign in process with dashboard navigation
@@ -17,6 +16,7 @@ Feature: Yuba SIM
     And I click the navigation link "/html/body/div[1]/aside/div[2]/nav/ul/li[2]/a"
     And I enter email "tewodrosberhanu19@gmail.com" in the individual email field
     And I click the form submit button "/html/body/div[1]/div/main/div/div[2]/div[1]/div/div[2]/div/div/div/div[2]/form/div[3]/div[2]/div[1]/div/button"
+    Then the SIM test should complete successfully
 
   @ACM
   Scenario: Sign in and workspace selection flow

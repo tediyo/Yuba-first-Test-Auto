@@ -223,16 +223,19 @@
         <div class="header">
             <h1>🚀 Yuba Website Test Report</h1>
             <div class="subtitle">Comprehensive Testing Suite Results</div>
-            <div class="timestamp">Generated on: " + timestamp + "</div>
+            <div class="timestamp">Report Generated: " + timestamp + "</div>
+            <div class="timestamp" style="margin-top: 8px;">Test Execution Started: " + executionStartTime + "</div>
+            <div class="timestamp">Test Execution Ended: " + executionEndTime + "</div>
+            <div class="timestamp" style="font-weight: 600; color: #3498db; margin-top: 8px;">Total Execution Duration: " + executionDuration + "</div>
         </div>
 
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number total">5</div>
-                <div class="stat-label">Total Scenarios</div>
+                <div class="stat-number total">1</div>
+                <div class="stat-label">Total Tests</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number passed">5</div>
+                <div class="stat-number passed">1</div>
                 <div class="stat-label">Passed</div>
             </div>
             <div class="stat-card">
@@ -240,8 +243,8 @@
                 <div class="stat-label">Failed</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number skipped">9</div>
-                <div class="stat-label">Skipped</div>
+                <div class="stat-number" style="color: #3498db;">0.0s</div>
+                <div class="stat-label">Total Duration</div>
             </div>
         </div>
 
@@ -353,19 +356,40 @@
         </div>
 
         <div class="test-section">
+            <h2 class="section-title">📋 Test Execution Details</h2>
+            <div style="margin-bottom: 20px;">
+                <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden;">
+                    <thead style="background: #3498db; color: white;">
+                        <tr>
+                            <th style="padding: 12px; text-align: left; font-weight: 600;">Test Name</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600;">Category</th>
+                            <th style="padding: 12px; text-align: center; font-weight: 600;">Status</th>
+                            <th style="padding: 12px; text-align: center; font-weight: 600;">Duration</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600;">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style='border-bottom: 1px solid #ecf0f1;'><td style='padding: 12px;'><strong>Complete User Invitation to organization by org Admin</strong></td><td style='padding: 12px; color: #7f8c8d;'>SIM</td><td style='padding: 12px; text-align: center;'><span class='status-badge status-passed'>✅ PASSED</span></td><td style='padding: 12px; text-align: center; font-weight: 600;'>0.090s</td><td style='padding: 12px; color: #7f8c8d; font-size: 0.9em;'>SIM test completed successfully. URL: https://yubanow.com/organization/invite-members, Page loaded: Yes</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="test-section">
             <h2 class="section-title">📊 Test Execution Summary</h2>
-            <div class="performance-metrics">
+            <div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px;'><div style='background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #3498db;'><h3 style='color: #2c3e50; margin-bottom: 10px; font-size: 1.2em;'>SIM</h3><div style='color: #7f8c8d; font-size: 0.9em;'><div>Total: <strong>1</strong></div><div>Passed: <strong style='color: #27ae60;'>1</strong></div><div>Failed: <strong style='color: #e74c3c;'>0</strong></div><div>Duration: <strong>0.09s</strong></div></div></div></div>
+            <div class="performance-metrics" style="margin-top: 20px;">
                 <div class="metric-item">
-                    <div class="metric-value">1m 18s</div>
+                    <div class="metric-value">0.0s</div>
                     <div class="metric-label">Total Duration</div>
                 </div>
                 <div class="metric-item">
-                    <div class="metric-value">26</div>
-                    <div class="metric-label">Steps Executed</div>
+                    <div class="metric-value">0.00s</div>
+                    <div class="metric-label">Avg Duration</div>
                 </div>
                 <div class="metric-item">
                     <div class="metric-value">1</div>
-                    <div class="metric-label">Browser Instance</div>
+                    <div class="metric-label">Total Tests</div>
                 </div>
                 <div class="metric-item">
                     <div class="metric-value">100%</div>
@@ -377,6 +401,7 @@
         <div class="footer">
             <p>🎯 <strong>Yuba Website Testing Suite</strong> | Automated with Selenium WebDriver & Cucumber BDD</p>
             <p>Generated by Custom HTML Reporter | Framework: Maven + JUnit Platform</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">Test Execution Period: 2025-12-11 10:34:34 to 2025-12-11 10:35:30 (56s)</p>
         </div>
     </div>
 </body>

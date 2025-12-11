@@ -7,9 +7,22 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class CustomHtmlReportGenerator {
+
+    private static LocalDateTime testExecutionStartTime;
+    private static LocalDateTime testExecutionEndTime;
+
+    public static void setTestExecutionStartTime(LocalDateTime startTime) {
+        testExecutionStartTime = startTime;
+    }
+
+    public static void setTestExecutionEndTime(LocalDateTime endTime) {
+        testExecutionEndTime = endTime;
+    }
 
     public static void generateCustomReport() {
         try {
@@ -112,7 +125,52 @@ public class CustomHtmlReportGenerator {
     private static String generateHtmlContent() {
         String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         
-        return """
+        // Get actual test results
+        Map<String, TestResultsCollector.TestResult> allResults = TestResultsCollector.getAllResults();
+        List<String> executionOrder = TestResultsCollector.getExecutionOrder();
+        
+        // Calculate statistics
+        int totalTests = TestResultsCollector.getTotalTests();
+        int passedTests = TestResultsCollector.getPassedTests();
+        int failedTests = TestResultsCollector.getFailedTests();
+        double totalDuration = TestResultsCollector.getTotalDuration() / 1000.0; // Convert to seconds
+        double avgDuration = TestResultsCollector.getAverageDuration() / 1000.0; // Convert to seconds
+        
+        // Group tests by category
+        Map<String, List<TestResultsCollector.TestResult>> testsByCategory = allResults.values().stream()
+            .collect(Collectors.groupingBy(r -> r.category != null && !r.category.isEmpty() ? r.category : "General"));
+        
+        // Calculate test execution time
+        String executionStartTime = testExecutionStartTime != null 
+            ? testExecutionStartTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+            : timestamp;
+        String executionEndTime = testExecutionEndTime != null 
+            ? testExecutionEndTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+            : timestamp;
+        
+        // Calculate duration between start and end
+        String executionDuration = "N/A";
+        if (testExecutionStartTime != null && testExecutionEndTime != null) {
+            long durationSeconds = java.time.Duration.between(testExecutionStartTime, testExecutionEndTime).getSeconds();
+            long hours = durationSeconds / 3600;
+            long minutes = (durationSeconds % 3600) / 60;
+            long seconds = durationSeconds % 60;
+            if (hours > 0) {
+                executionDuration = String.format("%dh %dm %ds", hours, minutes, seconds);
+            } else if (minutes > 0) {
+                executionDuration = String.format("%dm %ds", minutes, seconds);
+            } else {
+                executionDuration = String.format("%ds", seconds);
+            }
+        }
+        
+        // Generate test result rows
+        String testResultRows = generateTestResultRows(allResults, executionOrder);
+        
+        // Generate category summary
+        String categorySummary = generateCategorySummary(testsByCategory);
+        
+        String htmlTemplate = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -338,25 +396,28 @@ public class CustomHtmlReportGenerator {
         <div class="header">
             <h1>🚀 Yuba Website Test Report</h1>
             <div class="subtitle">Comprehensive Testing Suite Results</div>
-            <div class="timestamp">Generated on: " + timestamp + "</div>
+            <div class="timestamp">Report Generated: " + timestamp + "</div>
+            <div class="timestamp" style="margin-top: 8px;">Test Execution Started: " + executionStartTime + "</div>
+            <div class="timestamp">Test Execution Ended: " + executionEndTime + "</div>
+            <div class="timestamp" style="font-weight: 600; color: #3498db; margin-top: 8px;">Total Execution Duration: " + executionDuration + "</div>
         </div>
         
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number total">5</div>
-                <div class="stat-label">Total Scenarios</div>
+                <div class="stat-number total">TOTAL_TESTS_PLACEHOLDER</div>
+                <div class="stat-label">Total Tests</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number passed">5</div>
+                <div class="stat-number passed">PASSED_TESTS_PLACEHOLDER</div>
                 <div class="stat-label">Passed</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number failed">0</div>
+                <div class="stat-number failed">FAILED_TESTS_PLACEHOLDER</div>
                 <div class="stat-label">Failed</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number skipped">9</div>
-                <div class="stat-label">Skipped</div>
+                <div class="stat-number" style="color: #3498db;">TOTAL_DURATION_PLACEHOLDER</div>
+                <div class="stat-label">Total Duration</div>
             </div>
         </div>
         
@@ -468,22 +529,43 @@ public class CustomHtmlReportGenerator {
         </div>
         
         <div class="test-section">
+            <h2 class="section-title">📋 Test Execution Details</h2>
+            <div style="margin-bottom: 20px;">
+                <table style="width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden;">
+                    <thead style="background: #3498db; color: white;">
+                        <tr>
+                            <th style="padding: 12px; text-align: left; font-weight: 600;">Test Name</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600;">Category</th>
+                            <th style="padding: 12px; text-align: center; font-weight: 600;">Status</th>
+                            <th style="padding: 12px; text-align: center; font-weight: 600;">Duration</th>
+                            <th style="padding: 12px; text-align: left; font-weight: 600;">Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        TEST_RESULT_ROWS_PLACEHOLDER
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="test-section">
             <h2 class="section-title">📊 Test Execution Summary</h2>
-            <div class="performance-metrics">
+            CATEGORY_SUMMARY_PLACEHOLDER
+            <div class="performance-metrics" style="margin-top: 20px;">
                 <div class="metric-item">
-                    <div class="metric-value">1m 18s</div>
+                    <div class="metric-value">TOTAL_DURATION_METRIC_PLACEHOLDER</div>
                     <div class="metric-label">Total Duration</div>
                 </div>
                 <div class="metric-item">
-                    <div class="metric-value">26</div>
-                    <div class="metric-label">Steps Executed</div>
+                    <div class="metric-value">AVG_DURATION_PLACEHOLDER</div>
+                    <div class="metric-label">Avg Duration</div>
                 </div>
                 <div class="metric-item">
-                    <div class="metric-value">1</div>
-                    <div class="metric-label">Browser Instance</div>
+                    <div class="metric-value">TOTAL_TESTS_METRIC_PLACEHOLDER</div>
+                    <div class="metric-label">Total Tests</div>
                 </div>
                 <div class="metric-item">
-                    <div class="metric-value">100%</div>
+                    <div class="metric-value">SUCCESS_RATE_PLACEHOLDER</div>
                     <div class="metric-label">Success Rate</div>
                 </div>
             </div>
@@ -492,10 +574,100 @@ public class CustomHtmlReportGenerator {
         <div class="footer">
             <p>🎯 <strong>Yuba Website Testing Suite</strong> | Automated with Selenium WebDriver & Cucumber BDD</p>
             <p>Generated by Custom HTML Reporter | Framework: Maven + JUnit Platform</p>
+            <p style="margin-top: 10px; font-size: 0.85em;">Test Execution Period: EXEC_START_PLACEHOLDER to EXEC_END_PLACEHOLDER (EXEC_DURATION_PLACEHOLDER)</p>
         </div>
     </div>
 </body>
 </html>
 """;
+        
+        // Replace placeholders with actual values
+        htmlTemplate = htmlTemplate.replace("TIMESTAMP_PLACEHOLDER", timestamp);
+        htmlTemplate = htmlTemplate.replace("EXEC_START_PLACEHOLDER", executionStartTime);
+        htmlTemplate = htmlTemplate.replace("EXEC_END_PLACEHOLDER", executionEndTime);
+        htmlTemplate = htmlTemplate.replace("EXEC_DURATION_PLACEHOLDER", executionDuration);
+        htmlTemplate = htmlTemplate.replace("TOTAL_TESTS_PLACEHOLDER", String.valueOf(totalTests));
+        htmlTemplate = htmlTemplate.replace("PASSED_TESTS_PLACEHOLDER", String.valueOf(passedTests));
+        htmlTemplate = htmlTemplate.replace("FAILED_TESTS_PLACEHOLDER", String.valueOf(failedTests));
+        htmlTemplate = htmlTemplate.replace("TOTAL_DURATION_PLACEHOLDER", String.format("%.1f", totalDuration) + "s");
+        htmlTemplate = htmlTemplate.replace("TOTAL_DURATION_METRIC_PLACEHOLDER", String.format("%.1f", totalDuration) + "s");
+        htmlTemplate = htmlTemplate.replace("AVG_DURATION_PLACEHOLDER", String.format("%.2f", avgDuration) + "s");
+        htmlTemplate = htmlTemplate.replace("TOTAL_TESTS_METRIC_PLACEHOLDER", String.valueOf(totalTests));
+        htmlTemplate = htmlTemplate.replace("SUCCESS_RATE_PLACEHOLDER", totalTests > 0 ? String.format("%.0f%%", (passedTests * 100.0 / totalTests)) : "0%");
+        htmlTemplate = htmlTemplate.replace("TEST_RESULT_ROWS_PLACEHOLDER", testResultRows);
+        htmlTemplate = htmlTemplate.replace("CATEGORY_SUMMARY_PLACEHOLDER", categorySummary);
+        
+        return htmlTemplate;
+    }
+    
+    private static String generateTestResultRows(Map<String, TestResultsCollector.TestResult> results, List<String> executionOrder) {
+        if (results.isEmpty()) {
+            return "<tr><td colspan='5' style='text-align: center; padding: 30px; color: #7f8c8d;'>No test results available. Run tests to see results.</td></tr>";
+        }
+        
+        StringBuilder rows = new StringBuilder();
+        
+        for (String testName : executionOrder) {
+            TestResultsCollector.TestResult result = results.get(testName);
+            if (result == null) continue;
+            
+            String statusClass = result.status.equals("PASSED") ? "status-passed" : 
+                                result.status.equals("FAILED") ? "status-failed" : "status-skipped";
+            String statusIcon = result.status.equals("PASSED") ? "✅" : 
+                              result.status.equals("FAILED") ? "❌" : "⏭️";
+            
+            rows.append("<tr style='border-bottom: 1px solid #ecf0f1;'>");
+            rows.append("<td style='padding: 12px;'><strong>").append(escapeHtml(result.testName)).append("</strong></td>");
+            rows.append("<td style='padding: 12px; color: #7f8c8d;'>").append(escapeHtml(result.category != null ? result.category : "General")).append("</td>");
+            rows.append("<td style='padding: 12px; text-align: center;'><span class='status-badge ").append(statusClass).append("'>")
+                .append(statusIcon).append(" ").append(result.status).append("</span></td>");
+            rows.append("<td style='padding: 12px; text-align: center; font-weight: 600;'>")
+                .append(String.format("%.3f", result.duration / 1000.0)).append("s</td>");
+            rows.append("<td style='padding: 12px; color: #7f8c8d; font-size: 0.9em;'>")
+                .append(escapeHtml(result.details != null ? result.details : "")).append("</td>");
+            rows.append("</tr>");
+        }
+        
+        return rows.toString();
+    }
+    
+    private static String generateCategorySummary(Map<String, List<TestResultsCollector.TestResult>> testsByCategory) {
+        if (testsByCategory.isEmpty()) {
+            return "<p style='color: #7f8c8d; text-align: center; padding: 20px;'>No test categories available.</p>";
+        }
+        
+        StringBuilder summary = new StringBuilder();
+        summary.append("<div style='display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-bottom: 20px;'>");
+        
+        for (Map.Entry<String, List<TestResultsCollector.TestResult>> entry : testsByCategory.entrySet()) {
+            String category = entry.getKey();
+            List<TestResultsCollector.TestResult> categoryTests = entry.getValue();
+            
+            int passed = (int) categoryTests.stream().filter(t -> "PASSED".equals(t.status)).count();
+            int failed = (int) categoryTests.stream().filter(t -> "FAILED".equals(t.status)).count();
+            double totalDuration = categoryTests.stream().mapToLong(t -> t.duration).sum() / 1000.0;
+            
+            summary.append("<div style='background: #f8f9fa; padding: 20px; border-radius: 10px; border-left: 4px solid #3498db;'>");
+            summary.append("<h3 style='color: #2c3e50; margin-bottom: 10px; font-size: 1.2em;'>").append(escapeHtml(category)).append("</h3>");
+            summary.append("<div style='color: #7f8c8d; font-size: 0.9em;'>");
+            summary.append("<div>Total: <strong>").append(categoryTests.size()).append("</strong></div>");
+            summary.append("<div>Passed: <strong style='color: #27ae60;'>").append(passed).append("</strong></div>");
+            summary.append("<div>Failed: <strong style='color: #e74c3c;'>").append(failed).append("</strong></div>");
+            summary.append("<div>Duration: <strong>").append(String.format("%.2f", totalDuration)).append("s</strong></div>");
+            summary.append("</div>");
+            summary.append("</div>");
+        }
+        
+        summary.append("</div>");
+        return summary.toString();
+    }
+    
+    private static String escapeHtml(String text) {
+        if (text == null) return "";
+        return text.replace("&", "&amp;")
+                   .replace("<", "&lt;")
+                   .replace(">", "&gt;")
+                   .replace("\"", "&quot;")
+                   .replace("'", "&#39;");
     }
 }

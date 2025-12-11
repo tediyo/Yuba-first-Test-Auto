@@ -457,7 +457,7 @@
         <div class="header">
             <h1>ARefresh Test Report</h1>
             <div class="subtitle">Sign In, Workspace Selection, Navigation & Page Refresh Testing</div>
-            <div class="timestamp">Generated on: 2025-12-11 09:28:58</div>
+            <div class="timestamp">Generated on: 2025-12-11 10:19:57</div>
         </div>
 
         <div class="stats-grid">
@@ -543,15 +543,15 @@
                 <h2 class="section-title">📊 Performance Summary</h2>
                 <div class="summary-stats">
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="avg-response-time">0.087</div>
+                        <div class="summary-stat-value" id="avg-response-time">0.190</div>
                         <div class="summary-stat-label">Avg Response Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="avg-load-time">2.545</div>
+                        <div class="summary-stat-value" id="avg-load-time">61.128</div>
                         <div class="summary-stat-label">Avg Load Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="total-exec-time">-1765434535.52</div>
+                        <div class="summary-stat-value" id="total-exec-time">61.32</div>
                         <div class="summary-stat-label">Total Execution Time (s)</div>
                     </div>
                     <div class="summary-stat">
@@ -573,7 +573,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>ARefresh Test - Page Refresh Verification</strong></td><td><span class='status-badge status-passed'>✅ PASSED</span></td><td>0.095s</td><td>Page refreshed and loaded successfully. URL: https://yubanow.com/organization/credits</td></tr>
+                        <tr><td><strong>ARefresh Test - Page Refresh Verification</strong></td><td><span class='status-badge status-passed'>✅ PASSED</span></td><td>0.083s</td><td>Page refreshed and loaded successfully. URL: https://yubanow.com/organization/credits</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -615,7 +615,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>1</strong></td><td>Click refresh button</td><td><span class='action-badge action-refresh'>refresh</span></td><td class='time-cell response-time'>0.087s</td><td class='time-cell load-time'>2.545s</td><td class='time-cell total-time'>2.632s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>2</strong></td><td>Verify page refresh and loading time</td><td><span class='action-badge action-verification'>verification</span></td><td class='time-cell response-time'>1765434538.248s</td><td class='time-cell load-time'>-3530869076.401s</td><td class='time-cell total-time'>-1765434538.153s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr>
+                        <tr><td><strong>1</strong></td><td>Click refresh button</td><td><span class='action-badge action-refresh'>refresh</span></td><td class='time-cell response-time'>0.190s</td><td class='time-cell load-time'>61.128s</td><td class='time-cell total-time'>61.318s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>2</strong></td><td>Verify page refresh and loading time</td><td><span class='action-badge action-verification'>verification</span></td><td class='time-cell response-time'>0.000s</td><td class='time-cell load-time'>0.000s</td><td class='time-cell total-time'>0.000s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -628,7 +628,7 @@
                         <div class="metric-label">Total Steps</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value" id="execution-time">-1765434535521ms</div>
+                        <div class="metric-value" id="execution-time">1m 1s</div>
                         <div class="metric-label">Execution Time</div>
                     </div>
                     <div class="metric-item">
@@ -686,15 +686,15 @@
         // Performance data
         const performanceData = {
   stepLabels: ["Step 1", "Step 2"],
-  responseTimes: [0.087, 1765434538.248],
-  loadTimes: [2.545, -3530869076.401],
-  totalTimes: [2.632, -1765434538.153]
+  responseTimes: [0.190, 0.000],
+  loadTimes: [61.128, 0],
+  totalTimes: [61.318, 0]
 };
 
         // Update summary stats
-        document.getElementById('avg-response-time').textContent = 0.087 + 's';
-        document.getElementById('avg-load-time').textContent = 2.545 + 's';
-        document.getElementById('total-exec-time').textContent = -1765434535.52 + 's';
+        document.getElementById('avg-response-time').textContent = 0.190 + 's';
+        document.getElementById('avg-load-time').textContent = 61.128 + 's';
+        document.getElementById('total-exec-time').textContent = 61.32 + 's';
         document.getElementById('total-steps-count').textContent = 2;
 
         // Chart configuration

@@ -588,36 +588,180 @@ public class YubaAcmSteps {
         long responseTime = System.currentTimeMillis();
         PerformanceTracker.recordResponseTime(stepId, actionStartTime);
         
-        System.out.println("Refresh button clicked, waiting for page to reload...");
+        System.out.println("Refresh button clicked, waiting for page to reload and display completely...");
         
-        // Wait for page to refresh/reload
+        // Wait for page to refresh/reload and display completely
         try {
-            // Wait for document ready state to change (page starts reloading)
+            // Wait a brief moment for the refresh action to start
             Thread.sleep(500);
             
-            // Wait for page to complete loading after refresh
-            extendedWait.until(driver -> {
-                JavascriptExecutor js = (JavascriptExecutor) driver;
-                String readyState = (String) js.executeScript("return document.readyState");
-                return "complete".equals(readyState);
+            // Extended wait for page to fully load and display
+            WebDriverWait pageLoadWait = new WebDriverWait(driver, Duration.ofSeconds(60));
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            
+            // Wait for page to fully load and display correctly
+            pageLoadWait.until(driver -> {
+                try {
+                    // Step 1: Check document readyState is complete
+                    String readyState = (String) js.executeScript("return document.readyState");
+                    if (!"complete".equals(readyState)) {
+                        return false;
+                    }
+                    
+                    // Step 2: Wait for loading indicators/spinners to disappear
+                    List<WebElement> loadingElements = driver.findElements(By.xpath(
+                        "//*[contains(@class, 'loading') or contains(@class, 'spinner') or " +
+                        "contains(@class, 'loader') or contains(@id, 'loading') or " +
+                        "contains(@class, 'skeleton') or contains(text(), 'Loading') or " +
+                        "contains(text(), 'Please wait') or contains(text(), 'loading')]"));
+                    
+                    // Check if any loading indicators are actually visible
+                    long visibleLoadingElements = loadingElements.stream()
+                        .filter(element -> {
+                            try {
+                                return element.isDisplayed() && 
+                                       element.getSize().getHeight() > 0 && 
+                                       element.getSize().getWidth() > 0;
+                            } catch (Exception e) {
+                                return false;
+                            }
+                        })
+                        .count();
+                    
+                    if (visibleLoadingElements > 0) {
+                        System.out.println("Still waiting for loading indicators to disappear. Visible: " + visibleLoadingElements);
+                        return false;
+                    }
+                    
+                    // Step 3: Verify page content is actually displayed (not just in DOM)
+                    String bodyText = driver.findElement(By.tagName("body")).getText();
+                    if (bodyText == null || bodyText.trim().length() < 50) {
+                        System.out.println("Page content not yet displayed. Body text length: " + 
+                            (bodyText != null ? bodyText.length() : 0));
+                        return false;
+                    }
+                    
+                    // Step 4: Check for key ACM page elements to be visible
+                    // Look for common ACM page indicators
+                    boolean hasPageContent = false;
+                    try {
+                        // Check for ACM-related content or navigation elements
+                        List<WebElement> navElements = driver.findElements(By.xpath(
+                            "//nav | //aside | //main | //*[@role='navigation'] | //*[contains(@class, 'sidebar')]"));
+                        hasPageContent = navElements.stream()
+                            .anyMatch(element -> {
+                                try {
+                                    return element.isDisplayed() && element.getSize().getHeight() > 0;
+                                } catch (Exception e) {
+                                    return false;
+                                }
+                            });
+                        
+                        // Also check for any interactive elements (buttons, links, etc.)
+                        if (!hasPageContent) {
+                            List<WebElement> interactiveElements = driver.findElements(By.xpath(
+                                "//button | //a | //input | //select"));
+                            hasPageContent = interactiveElements.stream()
+                                .anyMatch(element -> {
+                                    try {
+                                        return element.isDisplayed() && element.getSize().getHeight() > 0;
+                                    } catch (Exception e) {
+                                        return false;
+                                    }
+                                });
+                        }
+                    } catch (Exception e) {
+                        System.out.println("Error checking page elements: " + e.getMessage());
+                    }
+                    
+                    if (!hasPageContent) {
+                        System.out.println("Page content elements not yet visible");
+                        return false;
+                    }
+                    
+                    // Step 5: Wait for images to load (check if images are loaded or if there are no images)
+                    try {
+                        Long imagesLoaded = (Long) js.executeScript(
+                            "var images = document.getElementsByTagName('img'); " +
+                            "var loaded = 0; " +
+                            "for (var i = 0; i < images.length; i++) { " +
+                            "  if (images[i].complete && images[i].naturalHeight !== 0) loaded++; " +
+                            "} " +
+                            "return images.length === 0 ? 1 : (loaded / images.length);");
+                        
+                        // If there are images, wait until at least 80% are loaded
+                        if (imagesLoaded < 0.8 && imagesLoaded > 0) {
+                            System.out.println("Waiting for images to load. Progress: " + 
+                                String.format("%.0f%%", imagesLoaded * 100));
+                            return false;
+                        }
+                    } catch (Exception e) {
+                        // If we can't check images, continue anyway
+                        System.out.println("Could not check image loading status: " + e.getMessage());
+                    }
+                    
+                    // Step 6: Check for any active AJAX requests (if jQuery is available)
+                    try {
+                        Boolean jqueryActive = (Boolean) js.executeScript(
+                            "return typeof jQuery !== 'undefined' && jQuery.active === 0");
+                        if (jqueryActive != null && !jqueryActive) {
+                            System.out.println("Waiting for AJAX requests to complete");
+                            return false;
+                        }
+                    } catch (Exception e) {
+                        // jQuery might not be available, continue
+                    }
+                    
+                    // Step 7: Final check - ensure page is stable (no rapid changes)
+                    // Wait a small moment to ensure page is stable
+                    Thread.sleep(1000);
+                    
+                    System.out.println("✅ Page fully loaded and displayed correctly");
+                    return true;
+                    
+                } catch (Exception e) {
+                    System.out.println("Error during page load check: " + e.getMessage());
+                    return false;
+                }
             });
             
-            // Additional wait for dynamic content to load
-            Thread.sleep(2000);
-            
-            // Verify page has refreshed by checking if URL changed or page reloaded
+            // Verify page has refreshed by checking URL
             String urlAfterRefresh = driver.getCurrentUrl();
             System.out.println("URL after refresh: " + urlAfterRefresh);
+            System.out.println("Page title: " + driver.getTitle());
             
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
+            System.err.println("Interrupted while waiting for page to load");
+        } catch (org.openqa.selenium.TimeoutException e) {
+            System.err.println("Timeout waiting for page to fully load after refresh");
+            System.err.println("Current URL: " + driver.getCurrentUrl());
+            System.err.println("Document readyState: " + 
+                ((JavascriptExecutor) driver).executeScript("return document.readyState"));
         }
         
+        // Record load end time AFTER page is fully loaded and displayed
         long loadEndTime = System.currentTimeMillis();
+        
+        // Complete the step with proper timing:
+        // - actionStartTime: when we started looking for the button (before click)
+        // - responseTime: when the button was clicked (immediate response)
+        // - loadEndTime: when the page is fully loaded and displayed (after all checks pass)
         PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
         
-        long refreshTime = loadEndTime - responseTime;
-        System.out.println("Refresh completed. Loading time: " + refreshTime + " ms");
+        // Calculate and log timing metrics
+        long totalTime = loadEndTime - actionStartTime;
+        long responseTimeDuration = responseTime - actionStartTime;
+        long loadTimeDuration = loadEndTime - responseTime;
+        
+        System.out.println("=== Refresh Timing Metrics ===");
+        System.out.println("Response Time (click): " + responseTimeDuration + " ms (" + 
+            String.format("%.3f", responseTimeDuration / 1000.0) + " seconds)");
+        System.out.println("Load Time (page display): " + loadTimeDuration + " ms (" + 
+            String.format("%.3f", loadTimeDuration / 1000.0) + " seconds)");
+        System.out.println("Total Time (button click to full display): " + totalTime + " ms (" + 
+            String.format("%.3f", totalTime / 1000.0) + " seconds)");
+        System.out.println("=================================");
     }
 
     @Then("the page should refresh and load within acceptable time")

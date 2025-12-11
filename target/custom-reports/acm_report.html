@@ -456,7 +456,7 @@
         <div class="header">
             <h1>ACM Test Report</h1>
             <div class="subtitle">Sign In, Workspace Selection & Navigation Flow Testing</div>
-            <div class="timestamp">Generated on: 2025-12-11 09:28:58</div>
+            <div class="timestamp">Generated on: 2025-12-11 10:21:53</div>
         </div>
 
         <div class="stats-grid">
@@ -469,7 +469,7 @@
                 <div class="stat-label">Passed</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number failed" id="failed-count">0</div>
+                <div class="stat-number failed" id="failed-count">1</div>
                 <div class="stat-label">Failed</div>
             </div>
             <div class="stat-card">
@@ -486,7 +486,7 @@
                         <div class="test-name">Sign in and workspace selection flow</div>
                         <div class="test-description">End-to-end test covering sign-in, workspace selection, navigation, and page load verification</div>
                     </div>
-                    <span class="status-badge status-passed" id="scenario-status">✅ Passed</span>
+                    <span class="status-badge status-failed" id="scenario-status">❌ Failed</span>
                 </div>
 
                 <div class="step-list">
@@ -535,8 +535,8 @@
                         <div class="step-name">✅ And I select the ACM element</div>
                         <div class="step-status">Selects ACM option</div>
                     </div>
-                    <div class="step-item passed">
-                        <div class="step-name">✅ Then a new page should load for ACM test</div>
+                    <div class="step-item failed">
+                        <div class="step-name">❌ Then a new page should load for ACM test</div>
                         <div class="step-status">Verifies new page loaded successfully</div>
                     </div>
                 </div>
@@ -546,19 +546,19 @@
                 <h2 class="section-title">📊 Performance Summary</h2>
                 <div class="summary-stats">
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="avg-response-time">2.011</div>
+                        <div class="summary-stat-value" id="avg-response-time">1.781</div>
                         <div class="summary-stat-label">Avg Response Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="avg-load-time">5.647</div>
+                        <div class="summary-stat-value" id="avg-load-time">3.213</div>
                         <div class="summary-stat-label">Avg Load Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="total-exec-time">7.66</div>
+                        <div class="summary-stat-value" id="total-exec-time">18.09</div>
                         <div class="summary-stat-label">Total Execution Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="total-steps-count">1</div>
+                        <div class="summary-stat-value" id="total-steps-count">4</div>
                         <div class="summary-stat-label">Total Steps Tracked</div>
                     </div>
                 </div>
@@ -576,7 +576,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td colspan='4' style='text-align: center; padding: 30px; color: #64748b;'>No test results available. Run tests to see results.</td></tr>
+                        <tr><td><strong>ACM Test - New Page Load Verification</strong></td><td><span class='status-badge status-failed'>❌ FAILED</span></td><td>3.102s</td><td>FAILED: New page did not load after clicking Transfer Credits. URL before selection: &#39;https://yubanow.com/organization/credits&#39;, Current URL: &#39;https://yubanow.com/organization/credits&#39;. The page did not navigate to a new page as expected.</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -618,7 +618,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>1</strong></td><td>Click ACM navigation link: /html/body/div[1]/aside/div[2]/nav/ul/li[6]/a</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>2.011s</td><td class='time-cell load-time'>5.647s</td><td class='time-cell total-time'>7.658s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr>
+                        <tr><td><strong>1</strong></td><td>Click ACM navigation link: /html/body/div[1]/aside/div[2]/nav/ul/li[6]/a</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>1.983s</td><td class='time-cell load-time'>4.583s</td><td class='time-cell total-time'>6.566s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>2</strong></td><td>Click ACM element: //*[@id=&quot;radix-«r1k»&quot;]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>2.173s</td><td class='time-cell load-time'>2.026s</td><td class='time-cell total-time'>4.199s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>3</strong></td><td>Select ACM element: //*[@id=&quot;radix-«r1l»&quot;]/div[3]</td><td><span class='action-badge action-click'>click</span></td><td class='time-cell response-time'>1.186s</td><td class='time-cell load-time'>3.030s</td><td class='time-cell total-time'>4.216s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr><tr><td><strong>4</strong></td><td>Verify new page loaded for ACM test</td><td><span class='action-badge action-verification'>verification</span></td><td class='time-cell response-time'>0.000s</td><td class='time-cell load-time'>0.000s</td><td class='time-cell total-time'>3.110s</td><td><span class='status-badge status-failed'>❌ FAILED</span></td></tr>
                     </tbody>
                 </table>
             </div>
@@ -627,19 +627,19 @@
                 <h2 class="section-title">📊 Test Execution Metrics</h2>
                 <div class="performance-metrics">
                     <div class="metric-item">
-                        <div class="metric-value" id="total-steps">1</div>
+                        <div class="metric-value" id="total-steps">4</div>
                         <div class="metric-label">Total Steps</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value" id="execution-time">7.66s</div>
+                        <div class="metric-value" id="execution-time">18.09s</div>
                         <div class="metric-label">Execution Time</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value" id="success-rate">N/A</div>
+                        <div class="metric-value" id="success-rate">0%</div>
                         <div class="metric-label">Success Rate</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value">✅_FINAL</div>
+                        <div class="metric-value">❌_FINAL</div>
                         <div class="metric-label">Test Status</div>
                     </div>
                 </div>
@@ -688,17 +688,17 @@
     <script>
         // Performance data
         const performanceData = {
-  stepLabels: ["Step 1"],
-  responseTimes: [2.011],
-  loadTimes: [5.647],
-  totalTimes: [7.658]
+  stepLabels: ["Step 1", "Step 2", "Step 3", "Step 4"],
+  responseTimes: [1.983, 2.173, 1.186, 0.000],
+  loadTimes: [4.583, 2.026, 3.030, 0.000],
+  totalTimes: [6.566, 4.199, 4.216, 3.110]
 };
 
         // Update summary stats
-        document.getElementById('avg-response-time').textContent = 2.011 + 's';
-        document.getElementById('avg-load-time').textContent = 5.647 + 's';
-        document.getElementById('total-exec-time').textContent = 7.66 + 's';
-        document.getElementById('total-steps-count').textContent = 1;
+        document.getElementById('avg-response-time').textContent = 1.781 + 's';
+        document.getElementById('avg-load-time').textContent = 3.213 + 's';
+        document.getElementById('total-exec-time').textContent = 18.09 + 's';
+        document.getElementById('total-steps-count').textContent = 4;
 
         // Chart configuration
         const chartOptions = {

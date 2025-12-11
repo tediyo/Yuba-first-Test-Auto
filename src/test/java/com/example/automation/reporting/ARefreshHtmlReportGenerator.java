@@ -76,8 +76,11 @@ public class ARefreshHtmlReportGenerator {
                 .average()
                 .orElse(0.0) / 1000.0;
         
+        // Calculate total execution time - sum of all step totalTimes
+        // Filter out invalid values (negative, zero, or unreasonably large)
         long totalExecutionTime = arefreshMetrics.isEmpty() ? 0 :
             arefreshMetrics.values().stream()
+                .filter(m -> m.totalTime > 0 && m.totalTime <= MAX_REASONABLE_TIME_MS)
                 .mapToLong(m -> m.totalTime)
                 .sum();
         
@@ -1000,6 +1003,8 @@ public class ARefreshHtmlReportGenerator {
             return "{ stepLabels: [], responseTimes: [], loadTimes: [], totalTimes: [] }";
         }
         
+        final long MAX_REASONABLE_TIME_MS = 3600000L; // 1 hour in milliseconds
+        
         StringBuilder json = new StringBuilder();
         json.append("{\n");
         json.append("  stepLabels: [");
@@ -1018,7 +1023,10 @@ public class ARefreshHtmlReportGenerator {
         List<String> responseTimes = executionOrder.stream()
             .map(id -> {
                 PerformanceTracker.PerformanceMetric m = metrics.get(id);
-                return m != null ? String.format("%.3f", m.responseTime / 1000.0) : "0";
+                if (m == null || m.responseTime < 0 || m.responseTime > MAX_REASONABLE_TIME_MS) {
+                    return "0";
+                }
+                return String.format("%.3f", m.responseTime / 1000.0);
             })
             .collect(Collectors.toList());
         json.append(String.join(", ", responseTimes));
@@ -1028,7 +1036,10 @@ public class ARefreshHtmlReportGenerator {
         List<String> loadTimes = executionOrder.stream()
             .map(id -> {
                 PerformanceTracker.PerformanceMetric m = metrics.get(id);
-                return m != null ? String.format("%.3f", m.loadTime / 1000.0) : "0";
+                if (m == null || m.loadTime < 0 || m.loadTime > MAX_REASONABLE_TIME_MS) {
+                    return "0";
+                }
+                return String.format("%.3f", m.loadTime / 1000.0);
             })
             .collect(Collectors.toList());
         json.append(String.join(", ", loadTimes));
@@ -1038,7 +1049,10 @@ public class ARefreshHtmlReportGenerator {
         List<String> totalTimes = executionOrder.stream()
             .map(id -> {
                 PerformanceTracker.PerformanceMetric m = metrics.get(id);
-                return m != null ? String.format("%.3f", m.totalTime / 1000.0) : "0";
+                if (m == null || m.totalTime < 0 || m.totalTime > MAX_REASONABLE_TIME_MS) {
+                    return "0";
+                }
+                return String.format("%.3f", m.totalTime / 1000.0);
             })
             .collect(Collectors.toList());
         json.append(String.join(", ", totalTimes));
@@ -1053,6 +1067,8 @@ public class ARefreshHtmlReportGenerator {
             return "<tr><td colspan='7' style='text-align: center; padding: 30px; color: #64748b;'>No performance data available. Run tests to see metrics.</td></tr>";
         }
         
+        final long MAX_REASONABLE_TIME_MS = 3600000L; // 1 hour in milliseconds
+        
         StringBuilder rows = new StringBuilder();
         int stepNum = 1;
         
@@ -1066,17 +1082,25 @@ public class ARefreshHtmlReportGenerator {
             String statusIcon = metric.status.equals("PASSED") ? "✅" : 
                               metric.status.equals("FAILED") ? "❌" : "⏭️";
             
+            // Validate and format times (handle invalid/negative values)
+            double responseTime = (metric.responseTime >= 0 && metric.responseTime <= MAX_REASONABLE_TIME_MS) 
+                ? metric.responseTime / 1000.0 : 0.0;
+            double loadTime = (metric.loadTime >= 0 && metric.loadTime <= MAX_REASONABLE_TIME_MS) 
+                ? metric.loadTime / 1000.0 : 0.0;
+            double totalTime = (metric.totalTime >= 0 && metric.totalTime <= MAX_REASONABLE_TIME_MS) 
+                ? metric.totalTime / 1000.0 : 0.0;
+            
             rows.append("<tr>");
             rows.append("<td><strong>").append(stepNum++).append("</strong></td>");
             rows.append("<td>").append(escapeHtml(metric.stepName)).append("</td>");
             rows.append("<td><span class='action-badge ").append(actionClass).append("'>")
                 .append(metric.actionType).append("</span></td>");
             rows.append("<td class='time-cell response-time'>")
-                .append(String.format("%.3f", metric.responseTime / 1000.0)).append("s</td>");
+                .append(String.format("%.3f", responseTime)).append("s</td>");
             rows.append("<td class='time-cell load-time'>")
-                .append(String.format("%.3f", metric.loadTime / 1000.0)).append("s</td>");
+                .append(String.format("%.3f", loadTime)).append("s</td>");
             rows.append("<td class='time-cell total-time'>")
-                .append(String.format("%.3f", metric.totalTime / 1000.0)).append("s</td>");
+                .append(String.format("%.3f", totalTime)).append("s</td>");
             rows.append("<td><span class='status-badge ").append(statusClass).append("'>")
                 .append(statusIcon).append(" ").append(metric.status).append("</span></td>");
             rows.append("</tr>");

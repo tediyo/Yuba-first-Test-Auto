@@ -4,6 +4,7 @@ C:\Users\Thedr\Desktop\YUBASE\selenium-bdd\src\test\java\com\example\automation\
 C:\Users\Thedr\Desktop\YUBASE\selenium-bdd\src\test\java\com\example\automation\reporting\TestResultsCollector.java
 C:\Users\Thedr\Desktop\YUBASE\selenium-bdd\src\test\java\com\example\automation\steps\YubaSignInSteps.java
 C:\Users\Thedr\Desktop\YUBASE\selenium-bdd\src\test\java\com\example\automation\reporting\CustomHtmlReportGenerator.java
+C:\Users\Thedr\Desktop\YUBASE\selenium-bdd\src\test\java\com\example\automation\reporting\ARefreshHtmlReportGenerator.java
 C:\Users\Thedr\Desktop\YUBASE\selenium-bdd\src\test\java\com\example\automation\runners\CucumberTestRunnerTest.java
 C:\Users\Thedr\Desktop\YUBASE\selenium-bdd\src\test\java\com\example\automation\reporting\AcmHtmlReportGenerator.java
 C:\Users\Thedr\Desktop\YUBASE\selenium-bdd\src\test\java\com\example\automation\steps\WebFormSteps.java

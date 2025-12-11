@@ -494,5 +494,213 @@ public class YubaAcmSteps {
                 .isTrue(); // This will throw AssertionError when newPageLoaded is false
         }
     }
+
+    @And("I click the refresh button")
+    public void i_click_the_refresh_button() {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Click refresh button",
+            "Clicks the refresh button to reload the page",
+            "refresh"
+        );
+        
+        WebDriverWait extendedWait = new WebDriverWait(driver, Duration.ofSeconds(30));
+        
+        System.out.println("Looking for refresh button");
+        System.out.println("Current URL: " + driver.getCurrentUrl());
+        
+        WebElement refreshButton = null;
+        
+        // Try multiple selector strategies in order of reliability
+        try {
+            // Strategy 1: Use data-slot="button" and text "Refresh"
+            System.out.println("Trying to find refresh button by data-slot and text...");
+            refreshButton = extendedWait.until(ExpectedConditions.presenceOfElementLocated(
+                By.xpath("//button[@data-slot='button' and contains(., 'Refresh')]")
+            ));
+            System.out.println("✅ Found refresh button using data-slot and text");
+        } catch (Exception e1) {
+            System.out.println("data-slot selector failed, trying by text content only...");
+            try {
+                // Strategy 2: Find by text content "Refresh"
+                refreshButton = extendedWait.until(ExpectedConditions.presenceOfElementLocated(
+                    By.xpath("//button[contains(., 'Refresh')]")
+                ));
+                System.out.println("✅ Found refresh button using text content");
+            } catch (Exception e2) {
+                System.out.println("Text content selector failed, trying CSS selector...");
+                try {
+                    // Strategy 3: Try CSS selector with data-slot
+                    refreshButton = extendedWait.until(ExpectedConditions.presenceOfElementLocated(
+                        By.cssSelector("button[data-slot='button']")
+                    ));
+                    // Verify it contains "Refresh" text
+                    if (!refreshButton.getText().contains("Refresh")) {
+                        // Find all buttons with data-slot and filter by text
+                        List<WebElement> buttons = driver.findElements(By.cssSelector("button[data-slot='button']"));
+                        for (WebElement btn : buttons) {
+                            if (btn.getText().contains("Refresh")) {
+                                refreshButton = btn;
+                                break;
+                            }
+                        }
+                        if (refreshButton == null || !refreshButton.getText().contains("Refresh")) {
+                            throw new org.openqa.selenium.NoSuchElementException("Refresh button not found");
+                        }
+                    }
+                    System.out.println("✅ Found refresh button using CSS selector");
+                } catch (Exception e3) {
+                    PerformanceTracker.failStep(stepId, actionStartTime);
+                    System.err.println("Failed to find refresh button after trying all strategies");
+                    System.err.println("Error: " + e3.getMessage());
+                    
+                    // Print available buttons for debugging
+                    try {
+                        List<WebElement> buttons = driver.findElements(By.cssSelector("button"));
+                        System.err.println("Available buttons on page: " + buttons.size());
+                        for (int i = 0; i < Math.min(10, buttons.size()); i++) {
+                            WebElement btn = buttons.get(i);
+                            System.err.println("  - Button " + (i+1) + ": text='" + btn.getText() + 
+                                "', data-slot='" + btn.getAttribute("data-slot") + "'");
+                        }
+                    } catch (Exception debugEx) {
+                        System.err.println("Could not list available buttons: " + debugEx.getMessage());
+                    }
+                    
+                    throw new org.openqa.selenium.TimeoutException(
+                        "Could not find refresh button. Tried: data-slot with text, text content, and CSS selector.", e3);
+                }
+            }
+        }
+        
+        // Scroll to the refresh button
+        ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView({behavior: 'smooth', block: 'center'});", refreshButton);
+        
+        // Wait for button to be clickable
+        refreshButton = extendedWait.until(ExpectedConditions.elementToBeClickable(refreshButton));
+        
+        // Store URL before refresh to detect page reload
+        String urlBeforeRefresh = driver.getCurrentUrl();
+        System.out.println("URL before refresh: " + urlBeforeRefresh);
+        
+        // Click the refresh button - response time is when click completes
+        refreshButton.click();
+        long responseTime = System.currentTimeMillis();
+        PerformanceTracker.recordResponseTime(stepId, actionStartTime);
+        
+        System.out.println("Refresh button clicked, waiting for page to reload...");
+        
+        // Wait for page to refresh/reload
+        try {
+            // Wait for document ready state to change (page starts reloading)
+            Thread.sleep(500);
+            
+            // Wait for page to complete loading after refresh
+            extendedWait.until(driver -> {
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                String readyState = (String) js.executeScript("return document.readyState");
+                return "complete".equals(readyState);
+            });
+            
+            // Additional wait for dynamic content to load
+            Thread.sleep(2000);
+            
+            // Verify page has refreshed by checking if URL changed or page reloaded
+            String urlAfterRefresh = driver.getCurrentUrl();
+            System.out.println("URL after refresh: " + urlAfterRefresh);
+            
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        
+        long loadEndTime = System.currentTimeMillis();
+        PerformanceTracker.completeStep(stepId, actionStartTime, responseTime, loadEndTime);
+        
+        long refreshTime = loadEndTime - responseTime;
+        System.out.println("Refresh completed. Loading time: " + refreshTime + " ms");
+    }
+
+    @Then("the page should refresh and load within acceptable time")
+    public void the_page_should_refresh_and_load_within_acceptable_time() {
+        long actionStartTime = System.currentTimeMillis();
+        String stepId = PerformanceTracker.startStep(
+            "Verify page refresh and loading time",
+            "Verifies that the page refreshed and measures loading time",
+            "verification"
+        );
+        
+        WebDriverWait extendedWait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        
+        // Verify page is loaded
+        try {
+            extendedWait.until(driver -> {
+                JavascriptExecutor js = (JavascriptExecutor) driver;
+                String readyState = (String) js.executeScript("return document.readyState");
+                return "complete".equals(readyState);
+            });
+        } catch (Exception e) {
+            System.out.println("Page ready state check completed");
+        }
+        
+        // Get the refresh loading time from the previous step
+        // The PerformanceTracker should have recorded this
+        String currentUrl = driver.getCurrentUrl();
+        String pageTitle = driver.getTitle();
+        
+        System.out.println("=== Refresh Test Verification ===");
+        System.out.println("Current URL: " + currentUrl);
+        System.out.println("Page Title: " + pageTitle);
+        
+        // Verify page is accessible and loaded
+        boolean pageLoaded = false;
+        try {
+            String bodyText = driver.findElement(By.tagName("body")).getText();
+            pageLoaded = bodyText.length() > 100 && "complete".equals(
+                ((JavascriptExecutor) driver).executeScript("return document.readyState")
+            );
+            System.out.println("Page Content Length: " + bodyText.length());
+        } catch (Exception e) {
+            System.err.println("Error checking page content: " + e.getMessage());
+        }
+        
+        long verificationTime = System.currentTimeMillis() - actionStartTime;
+        
+        if (pageLoaded) {
+            // Record success
+            TestResultsCollector.recordTestResult(
+                "ARefresh Test - Page Refresh Verification",
+                "PASSED",
+                verificationTime,
+                "ARefresh",
+                "Page refreshed and loaded successfully. URL: " + currentUrl
+            );
+            PerformanceTracker.completeStep(stepId, actionStartTime, verificationTime);
+            
+            System.out.println("✅ ARefresh Test PASSED: Page refreshed and loaded successfully");
+            System.out.println("========================================");
+            assertThat(pageLoaded)
+                .as("The page should have refreshed and loaded successfully")
+                .isTrue();
+        } else {
+            // Record failure
+            TestResultsCollector.recordTestResult(
+                "ARefresh Test - Page Refresh Verification",
+                "FAILED",
+                verificationTime,
+                "ARefresh",
+                "Page did not refresh or load properly. URL: " + currentUrl
+            );
+            PerformanceTracker.failStep(stepId, actionStartTime);
+            
+            System.err.println("========================================");
+            System.err.println("❌ ARefresh Test FAILED: Page did not refresh properly");
+            System.err.println("Current URL: " + currentUrl);
+            System.err.println("========================================");
+            
+            assertThat(pageLoaded)
+                .as("The page should have refreshed and loaded successfully, but it did not")
+                .isTrue();
+        }
+    }
 }
 

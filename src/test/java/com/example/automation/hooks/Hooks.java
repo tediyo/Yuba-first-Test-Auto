@@ -66,6 +66,13 @@ public class Hooks {
             System.err.println("Failed to generate ACM report: " + e.getMessage());
         }
         
+        // Generate ARefresh-specific HTML report
+        try {
+            com.example.automation.reporting.ARefreshHtmlReportGenerator.generateARefreshReport();
+        } catch (Exception e) {
+            System.err.println("Failed to generate ARefresh report: " + e.getMessage());
+        }
+        
         // Quit driver only once at the end of all scenarios
         if (driverInitialized) {
             DriverFactory.quitDriver();

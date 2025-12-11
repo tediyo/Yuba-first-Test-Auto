@@ -1,9 +1,175 @@
+package com.example.automation.reporting;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+public class ARefreshHtmlReportGenerator {
+
+    public static void generateARefreshReport() {
+        try {
+            // Generate ARefresh-specific report
+            Path targetDir = Paths.get("target/custom-reports");
+            Files.createDirectories(targetDir);
+            
+            String htmlContent = generateARefreshHtmlContent();
+            
+            try (FileWriter writer = new FileWriter(targetDir.resolve("arefresh_report.html").toFile())) {
+                writer.write(htmlContent);
+            }
+            
+            System.out.println("ARefresh HTML report generated: target/custom-reports/arefresh_report.html");
+            
+        } catch (IOException e) {
+            System.err.println("Error generating ARefresh report: " + e.getMessage());
+        }
+    }
+    
+    private static String generateARefreshHtmlContent() {
+        String timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        
+        // Get performance metrics
+        Map<String, PerformanceTracker.PerformanceMetric> metrics = PerformanceTracker.getAllMetrics();
+        List<String> executionOrder = PerformanceTracker.getExecutionOrder();
+        
+        // Filter ARefresh-related metrics (contains "refresh" or "ARefresh")
+        Map<String, PerformanceTracker.PerformanceMetric> arefreshMetrics = metrics.entrySet().stream()
+            .filter(entry -> {
+                String stepName = entry.getValue().stepName.toLowerCase();
+                return stepName.contains("refresh") || stepName.contains("arefresh") || 
+                       entry.getValue().stepName.contains("ARefresh");
+            })
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        
+        List<String> arefreshExecutionOrder = executionOrder.stream()
+            .filter(id -> arefreshMetrics.containsKey(id))
+            .collect(Collectors.toList());
+        
+        // Get ARefresh test results
+        Map<String, TestResultsCollector.TestResult> allResults = TestResultsCollector.getAllResults();
+        Map<String, TestResultsCollector.TestResult> arefreshResults = allResults.entrySet().stream()
+            .filter(entry -> "ARefresh".equals(entry.getValue().category))
+            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        
+        // Calculate summary statistics for ARefresh tests
+        // Filter out metrics with invalid times (0, negative, or unreasonably large > 1 hour) for averages
+        final long MAX_REASONABLE_TIME_MS = 3600000L; // 1 hour in milliseconds
+        
+        double avgResponseTime = arefreshMetrics.isEmpty() ? 0.0 : 
+            arefreshMetrics.values().stream()
+                .filter(m -> m.responseTime > 0 && m.responseTime <= MAX_REASONABLE_TIME_MS)
+                .mapToLong(m -> m.responseTime)
+                .average()
+                .orElse(0.0) / 1000.0;
+        
+        double avgLoadTime = arefreshMetrics.isEmpty() ? 0.0 :
+            arefreshMetrics.values().stream()
+                .filter(m -> m.loadTime > 0 && m.loadTime <= MAX_REASONABLE_TIME_MS)
+                .mapToLong(m -> m.loadTime)
+                .average()
+                .orElse(0.0) / 1000.0;
+        
+        long totalExecutionTime = arefreshMetrics.isEmpty() ? 0 :
+            arefreshMetrics.values().stream()
+                .mapToLong(m -> m.totalTime)
+                .sum();
+        
+        // Check PerformanceTracker for failed ARefresh steps
+        boolean hasFailedSteps = arefreshMetrics.values().stream()
+            .anyMatch(m -> "FAILED".equals(m.status));
+        
+        // Check if verification step passed
+        boolean verificationPassed = arefreshResults.values().stream()
+            .anyMatch(r -> "ARefresh Test - Page Refresh Verification".equals(r.testName) && "PASSED".equals(r.status));
+        
+        // Determine test status - test passes only if no steps failed AND verification passed
+        // If test failed early (no results recorded), check PerformanceTracker
+        boolean testPassed = !hasFailedSteps && verificationPassed;
+        
+        // If no results recorded at all, check if we have any ARefresh metrics (test started)
+        // If test started but no verification result, it likely failed before reaching verification
+        if (arefreshResults.isEmpty() && !arefreshMetrics.isEmpty()) {
+            // Test started but didn't complete - check if any step failed
+            testPassed = !hasFailedSteps;
+        }
+        
+        int passedCount = (int) arefreshResults.values().stream()
+            .filter(r -> "PASSED".equals(r.status))
+            .count();
+        
+        int failedCount = (int) arefreshResults.values().stream()
+            .filter(r -> "FAILED".equals(r.status))
+            .count();
+        
+        // If we have failed steps in PerformanceTracker but no results recorded, count as failed
+        if (hasFailedSteps && failedCount == 0) {
+            // Also record a synthetic failure result for display
+            if (!arefreshResults.containsKey("ARefresh Test - Scenario Failed")) {
+                TestResultsCollector.recordTestResult(
+                    "ARefresh Test - Scenario Failed",
+                    "FAILED",
+                    0,
+                    "ARefresh",
+                    "Test failed during execution. One or more steps failed before reaching verification."
+                );
+                // Re-collect results after recording the failure
+                arefreshResults = TestResultsCollector.getAllResults().entrySet().stream()
+                    .filter(entry -> "ARefresh".equals(entry.getValue().category))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            }
+            failedCount = 1;
+        }
+        
+        // If no results and no metrics, test might not have run - but we'll assume 1 scenario
+        // Total scenarios should always be 1 for ARefresh test
+        int totalScenarios = 1;
+        
+        // Ensure counts are correct: if test failed, failedCount should be at least 1
+        if (!testPassed && failedCount == 0 && passedCount == 0 && !arefreshMetrics.isEmpty()) {
+            failedCount = 1;
+            // Record a failure if we haven't already
+            if (arefreshResults.isEmpty()) {
+                TestResultsCollector.recordTestResult(
+                    "ARefresh Test - Scenario Failed",
+                    "FAILED",
+                    0,
+                    "ARefresh",
+                    "Test failed during execution. No verification result recorded."
+                );
+                arefreshResults = TestResultsCollector.getAllResults().entrySet().stream()
+                    .filter(entry -> "ARefresh".equals(entry.getValue().category))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            }
+        }
+        
+        // Recalculate counts after potential updates
+        passedCount = (int) arefreshResults.values().stream()
+            .filter(r -> "PASSED".equals(r.status))
+            .count();
+        
+        failedCount = (int) arefreshResults.values().stream()
+            .filter(r -> "FAILED".equals(r.status))
+            .count();
+        
+        // Generate performance data for charts
+        String performanceDataJson = generatePerformanceDataJson(arefreshMetrics, arefreshExecutionOrder);
+        String stepTableRows = generateStepTableRows(arefreshMetrics, arefreshExecutionOrder);
+        String testResultRows = generateTestResultRows(arefreshResults);
+        
+        String html = """
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yuba ACM Test Report</title>
+    <title>Yuba ARefresh Test Report</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
         * {
@@ -11,7 +177,7 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
             line-height: 1.6;
@@ -21,23 +187,23 @@
             padding: 0;
             margin: 0;
         }
-
+        
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 40px 20px;
         }
-
+        
         .header {
             background: #ffffff;
             border-radius: 8px;
             padding: 40px;
             margin-bottom: 30px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-            border-left: 4px solid #8b5cf6;
+            border-left: 4px solid #3b82f6;
             text-align: left;
         }
-
+        
         .header h1 {
             color: #1a1a1a;
             font-size: 2.2em;
@@ -45,27 +211,27 @@
             font-weight: 600;
             letter-spacing: -0.5px;
         }
-
+        
         .header .subtitle {
             color: #64748b;
             font-size: 1.1em;
             margin-bottom: 16px;
             font-weight: 400;
         }
-
+        
         .header .timestamp {
             color: #94a3b8;
             font-size: 0.9em;
             font-weight: 400;
         }
-
+        
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 20px;
             margin-bottom: 30px;
         }
-
+        
         .stat-card {
             background: #ffffff;
             border-radius: 8px;
@@ -75,19 +241,19 @@
             transition: all 0.2s ease;
             border: 1px solid #e2e8f0;
         }
-
+        
         .stat-card:hover {
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             transform: translateY(-2px);
         }
-
+        
         .stat-number {
             font-size: 2.5em;
             font-weight: 600;
             margin-bottom: 8px;
             line-height: 1;
         }
-
+        
         .stat-label {
             color: #64748b;
             font-size: 0.875em;
@@ -95,17 +261,17 @@
             letter-spacing: 0.5px;
             font-weight: 500;
         }
-
+        
         .passed { color: #10b981; }
         .failed { color: #ef4444; }
         .skipped { color: #f59e0b; }
-        .total { color: #8b5cf6; }
-
+        .total { color: #3b82f6; }
+        
         .test-sections {
             display: grid;
             gap: 30px;
         }
-
+        
         .test-section {
             background: #ffffff;
             border-radius: 8px;
@@ -114,7 +280,7 @@
             border: 1px solid #e2e8f0;
             margin-bottom: 24px;
         }
-
+        
         .section-title {
             font-size: 1.5em;
             color: #1a1a1a;
@@ -124,7 +290,7 @@
             font-weight: 600;
             letter-spacing: -0.3px;
         }
-
+        
         .test-item {
             display: flex;
             justify-content: space-between;
@@ -132,22 +298,22 @@
             padding: 15px 0;
             border-bottom: 1px solid #ecf0f1;
         }
-
+        
         .test-item:last-child {
             border-bottom: none;
         }
-
+        
         .test-name {
             font-weight: 600;
             color: #1a1a1a;
         }
-
+        
         .test-description {
             color: #64748b;
             font-size: 0.9em;
             margin-top: 5px;
         }
-
+        
         .status-badge {
             padding: 8px 16px;
             border-radius: 20px;
@@ -156,27 +322,27 @@
             text-transform: uppercase;
             letter-spacing: 0.5px;
         }
-
+        
         .status-passed {
             background: #d5f4e6;
             color: #10b981;
         }
-
+        
         .status-failed {
             background: #ffeaea;
             color: #ef4444;
         }
-
+        
         .status-skipped {
             background: #fff3cd;
             color: #f59e0b;
         }
-
+        
         .step-list {
             margin-top: 20px;
             padding-left: 20px;
         }
-
+        
         .step-item {
             padding: 12px 16px;
             margin: 6px 0;
@@ -184,34 +350,34 @@
             border-radius: 6px;
             border-left: 3px solid #cbd5e1;
         }
-
+        
         .step-item.passed {
             border-left-color: #10b981;
             background: #f0fdf4;
         }
-
+        
         .step-item.failed {
             border-left-color: #ef4444;
             background: #fef2f2;
         }
-
+        
         .step-item.skipped {
             border-left-color: #f59e0b;
             background: #fffbeb;
         }
-
+        
         .step-name {
             font-weight: 500;
             color: #1a1a1a;
             font-size: 0.95em;
         }
-
+        
         .step-status {
             font-size: 0.8125em;
             color: #64748b;
             margin-top: 4px;
         }
-
+        
         .browser-info {
             background: #ffffff;
             border-radius: 8px;
@@ -220,14 +386,14 @@
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
             border: 1px solid #e2e8f0;
         }
-
+        
         .browser-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             margin-top: 20px;
         }
-
+        
         .browser-item {
             text-align: center;
             padding: 20px;
@@ -235,17 +401,17 @@
             border-radius: 6px;
             border: 1px solid #e2e8f0;
         }
-
+        
         .browser-item strong {
             color: #1a1a1a;
             font-weight: 600;
         }
-
+        
         .browser-icon {
             font-size: 2.5em;
             margin-bottom: 10px;
         }
-
+        
         .footer {
             text-align: center;
             margin-top: 48px;
@@ -256,18 +422,18 @@
             border-radius: 8px;
             border: 1px solid #e2e8f0;
         }
-
+        
         .footer p {
             margin: 4px 0;
         }
-
+        
         .performance-metrics {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin-top: 20px;
         }
-
+        
         .metric-item {
             background: #f8fafc;
             padding: 20px;
@@ -275,20 +441,20 @@
             text-align: center;
             border: 1px solid #e2e8f0;
         }
-
+        
         .metric-value {
             font-size: 1.75em;
             font-weight: 600;
             color: #1a1a1a;
         }
-
+        
         .metric-label {
             color: #64748b;
             font-size: 0.875em;
             margin-top: 8px;
             font-weight: 500;
         }
-
+        
         .chart-container {
             background: #ffffff;
             border-radius: 8px;
@@ -299,13 +465,13 @@
             position: relative;
             height: 400px;
         }
-
+        
         .chart-wrapper {
             position: relative;
             height: 350px;
             margin-top: 20px;
         }
-
+        
         .performance-table {
             width: 100%;
             border-collapse: collapse;
@@ -314,12 +480,12 @@
             border-radius: 8px;
             overflow: hidden;
         }
-
+        
         .performance-table thead {
             background: #1e293b;
             color: #ffffff;
         }
-
+        
         .performance-table th {
             padding: 15px;
             text-align: left;
@@ -328,37 +494,37 @@
             font-size: 0.85em;
             letter-spacing: 0.5px;
         }
-
+        
         .performance-table td {
             padding: 12px 15px;
             border-bottom: 1px solid #ecf0f1;
         }
-
+        
         .performance-table tbody tr:hover {
             background: #f8f9fa;
         }
-
+        
         .performance-table tbody tr:last-child td {
             border-bottom: none;
         }
-
+        
         .time-cell {
             font-weight: 600;
             color: #2c3e50;
         }
-
+        
         .response-time {
             color: #3498db;
         }
-
+        
         .load-time {
             color: #e67e22;
         }
-
+        
         .total-time {
             color: #27ae60;
         }
-
+        
         .action-badge {
             display: inline-block;
             padding: 4px 10px;
@@ -367,21 +533,22 @@
             font-weight: 600;
             text-transform: uppercase;
         }
-
+        
         .action-navigation { background: #e3f2fd; color: #1976d2; }
         .action-click { background: #f3e5f5; color: #7b1fa2; }
         .action-input { background: #e8f5e9; color: #388e3c; }
         .action-submit { background: #fff3e0; color: #f57c00; }
         .action-wait { background: #fce4ec; color: #c2185b; }
         .action-verification { background: #fff9e6; color: #f57f17; }
-
+        .action-refresh { background: #e0f2fe; color: #0284c7; }
+        
         .summary-stats {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 15px;
             margin: 20px 0;
         }
-
+        
         .summary-stat {
             background: #1e293b;
             color: #ffffff;
@@ -390,34 +557,34 @@
             text-align: center;
             border: 1px solid #334155;
         }
-
+        
         .summary-stat:nth-child(1) {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
-        }
-
-        .summary-stat:nth-child(2) {
             background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
         }
-
+        
+        .summary-stat:nth-child(2) {
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+        }
+        
         .summary-stat:nth-child(3) {
             background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         }
-
+        
         .summary-stat:nth-child(4) {
             background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
         }
-
+        
         .summary-stat-value {
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 5px;
         }
-
+        
         .summary-stat-label {
             font-size: 0.9em;
             opacity: 0.9;
         }
-
+        
         .test-result-table {
             width: 100%;
             border-collapse: collapse;
@@ -426,12 +593,12 @@
             border-radius: 8px;
             overflow: hidden;
         }
-
+        
         .test-result-table thead {
-            background: #8b5cf6;
+            background: #3b82f6;
             color: #ffffff;
         }
-
+        
         .test-result-table th {
             padding: 15px;
             text-align: left;
@@ -440,12 +607,12 @@
             font-size: 0.85em;
             letter-spacing: 0.5px;
         }
-
+        
         .test-result-table td {
             padding: 12px 15px;
             border-bottom: 1px solid #ecf0f1;
         }
-
+        
         .test-result-table tbody tr:hover {
             background: #f8f9fa;
         }
@@ -454,22 +621,22 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>ACM Test Report</h1>
-            <div class="subtitle">Sign In, Workspace Selection & Navigation Flow Testing</div>
-            <div class="timestamp">Generated on: 2025-12-11 09:28:58</div>
+            <h1>ARefresh Test Report</h1>
+            <div class="subtitle">Sign In, Workspace Selection, Navigation & Page Refresh Testing</div>
+            <div class="timestamp">Generated on: TIMESTAMP_PLACEHOLDER</div>
         </div>
-
+        
         <div class="stats-grid">
             <div class="stat-card">
-                <div class="stat-number total">1</div>
+                <div class="stat-number total">PERF_DATA_TOTAL_SCENARIOS</div>
                 <div class="stat-label">Total Scenarios</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number passed" id="passed-count">0</div>
+                <div class="stat-number passed" id="passed-count">PERF_DATA_PASSED</div>
                 <div class="stat-label">Passed</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number failed" id="failed-count">0</div>
+                <div class="stat-number failed" id="failed-count">PERF_DATA_FAILED</div>
                 <div class="stat-label">Failed</div>
             </div>
             <div class="stat-card">
@@ -477,18 +644,18 @@
                 <div class="stat-label">Skipped</div>
             </div>
         </div>
-
+        
         <div class="test-sections">
             <div class="test-section">
-                <h2 class="section-title">🔐 ACM Test Scenario</h2>
+                <h2 class="section-title">🔄 ARefresh Test Scenario</h2>
                 <div class="test-item">
                     <div>
-                        <div class="test-name">Sign in and workspace selection flow</div>
-                        <div class="test-description">End-to-end test covering sign-in, workspace selection, navigation, and page load verification</div>
+                        <div class="test-name">Sign in and navigate to ACM workspace</div>
+                        <div class="test-description">End-to-end test covering sign-in, workspace selection, navigation, refresh button click, and page load time measurement</div>
                     </div>
-                    <span class="status-badge status-passed" id="scenario-status">✅ Passed</span>
+                    <span class="status-badge STATUS_BADGE_CLASS" id="scenario-status">STATUS_TEXT</span>
                 </div>
-
+                
                 <div class="step-list">
                     <h3 style="margin-top: 24px; margin-bottom: 16px; color: #1a1a1a; font-size: 1.1em; font-weight: 600;">Test Steps:</h3>
                     <div class="step-item passed">
@@ -528,42 +695,38 @@
                         <div class="step-status">Navigates to ACM section</div>
                     </div>
                     <div class="step-item passed">
-                        <div class="step-name">✅ And I click the ACM element</div>
-                        <div class="step-status">Clicks ACM-specific element</div>
+                        <div class="step-name">✅ And I click the refresh button</div>
+                        <div class="step-status">Clicks the refresh button and measures loading time</div>
                     </div>
-                    <div class="step-item passed">
-                        <div class="step-name">✅ And I select the ACM element</div>
-                        <div class="step-status">Selects ACM option</div>
-                    </div>
-                    <div class="step-item passed">
-                        <div class="step-name">✅ Then a new page should load for ACM test</div>
-                        <div class="step-status">Verifies new page loaded successfully</div>
+                    <div class="step-item STATUS_STEP_CLASS">
+                        <div class="step-name">STATUS_ICON Then the page should refresh and load within acceptable time</div>
+                        <div class="step-status">Verifies page refreshed successfully and measures loading performance</div>
                     </div>
                 </div>
             </div>
-
+            
             <div class="test-section">
                 <h2 class="section-title">📊 Performance Summary</h2>
                 <div class="summary-stats">
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="avg-response-time">2.011</div>
+                        <div class="summary-stat-value" id="avg-response-time">PERF_DATA_AVG_RESPONSE</div>
                         <div class="summary-stat-label">Avg Response Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="avg-load-time">5.647</div>
+                        <div class="summary-stat-value" id="avg-load-time">PERF_DATA_AVG_LOAD</div>
                         <div class="summary-stat-label">Avg Load Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="total-exec-time">7.66</div>
+                        <div class="summary-stat-value" id="total-exec-time">PERF_DATA_TOTAL</div>
                         <div class="summary-stat-label">Total Execution Time (s)</div>
                     </div>
                     <div class="summary-stat">
-                        <div class="summary-stat-value" id="total-steps-count">1</div>
+                        <div class="summary-stat-value" id="total-steps-count">PERF_DATA_STEPS</div>
                         <div class="summary-stat-label">Total Steps Tracked</div>
                     </div>
                 </div>
             </div>
-
+            
             <div class="test-section">
                 <h2 class="section-title">📋 Test Results</h2>
                 <table class="test-result-table">
@@ -576,11 +739,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td colspan='4' style='text-align: center; padding: 30px; color: #64748b;'>No test results available. Run tests to see results.</td></tr>
+                        TEST_RESULT_ROWS
                     </tbody>
                 </table>
             </div>
-
+            
             <div class="test-section">
                 <h2 class="section-title">📈 Performance Charts</h2>
                 <div class="chart-container">
@@ -602,7 +765,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <div class="test-section">
                 <h2 class="section-title">📋 Detailed Performance Metrics</h2>
                 <table class="performance-table">
@@ -618,34 +781,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr><td><strong>1</strong></td><td>Click ACM navigation link: /html/body/div[1]/aside/div[2]/nav/ul/li[6]/a</td><td><span class='action-badge action-navigation'>navigation</span></td><td class='time-cell response-time'>2.011s</td><td class='time-cell load-time'>5.647s</td><td class='time-cell total-time'>7.658s</td><td><span class='status-badge status-passed'>✅ PASSED</span></td></tr>
+                        PERF_TABLE_ROWS
                     </tbody>
                 </table>
             </div>
-
+            
             <div class="test-section">
                 <h2 class="section-title">📊 Test Execution Metrics</h2>
                 <div class="performance-metrics">
                     <div class="metric-item">
-                        <div class="metric-value" id="total-steps">1</div>
+                        <div class="metric-value" id="total-steps">PERF_DATA_STEPS</div>
                         <div class="metric-label">Total Steps</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value" id="execution-time">7.66s</div>
+                        <div class="metric-value" id="execution-time">PERF_DATA_TOTAL_FORMATTED</div>
                         <div class="metric-label">Execution Time</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value" id="success-rate">N/A</div>
+                        <div class="metric-value" id="success-rate">PERF_DATA_SUCCESS_RATE</div>
                         <div class="metric-label">Success Rate</div>
                     </div>
                     <div class="metric-item">
-                        <div class="metric-value">✅_FINAL</div>
+                        <div class="metric-value">STATUS_ICON_FINAL</div>
                         <div class="metric-label">Test Status</div>
                     </div>
                 </div>
             </div>
         </div>
-
+        
         <div class="browser-info">
             <h2 class="section-title">🌐 Browser & Environment</h2>
             <div class="browser-grid">
@@ -671,35 +834,30 @@
                 </div>
             </div>
         </div>
-
+        
         <div class="footer">
-            <p> <strong>Yuba ACM Testing Suite</strong> | Automated with Selenium WebDriver & Cucumber BDD</p>
+            <p> <strong>Yuba ARefresh Testing Suite</strong> | Automated with Selenium WebDriver & Cucumber BDD</p>
             <p> Framework: Maven + JUnit Platform</p>
             <p style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #e2e8f0;">
-                Tested and report prepared by <a href="https://tewodrosberhanu.com" target="_blank" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Tewodros</a>
-                <span style="color: #64748b;">|</span>
+                Tested and report prepared by <a href="https://tewodrosberhanu.com" target="_blank" style="color: #3b82f6; text-decoration: none; font-weight: 600;">Tewodros</a> 
+                <span style="color: #64748b;">|</span> 
                 <a href="https://tewodrosberhanu.com" target="_blank" style="color: #3b82f6; text-decoration: none;">
                     <span style="display: inline-block; margin-left: 4px;">🌐 Website</span>
                 </a>
             </p>
         </div>
     </div>
-
+    
     <script>
         // Performance data
-        const performanceData = {
-  stepLabels: ["Step 1"],
-  responseTimes: [2.011],
-  loadTimes: [5.647],
-  totalTimes: [7.658]
-};
-
+        const performanceData = PERF_DATA_JSON;
+        
         // Update summary stats
-        document.getElementById('avg-response-time').textContent = 2.011 + 's';
-        document.getElementById('avg-load-time').textContent = 5.647 + 's';
-        document.getElementById('total-exec-time').textContent = 7.66 + 's';
-        document.getElementById('total-steps-count').textContent = 1;
-
+        document.getElementById('avg-response-time').textContent = PERF_DATA_AVG_RESPONSE + 's';
+        document.getElementById('avg-load-time').textContent = PERF_DATA_AVG_LOAD + 's';
+        document.getElementById('total-exec-time').textContent = PERF_DATA_TOTAL + 's';
+        document.getElementById('total-steps-count').textContent = PERF_DATA_STEPS;
+        
         // Chart configuration
         const chartOptions = {
             responsive: true,
@@ -730,7 +888,7 @@
                 }
             }
         };
-
+        
         // Response Time Chart
         if (performanceData.stepLabels && performanceData.stepLabels.length > 0) {
             const responseCtx = document.getElementById('responseTimeChart').getContext('2d');
@@ -741,14 +899,14 @@
                     datasets: [{
                         label: 'Response Time (s)',
                         data: performanceData.responseTimes,
-                        backgroundColor: 'rgba(139, 92, 246, 0.7)',
-                        borderColor: 'rgba(139, 92, 246, 1)',
+                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                        borderColor: 'rgba(59, 130, 246, 1)',
                         borderWidth: 2
                     }]
                 },
                 options: chartOptions
             });
-
+            
             // Load Time Chart
             const loadCtx = document.getElementById('loadTimeChart').getContext('2d');
             new Chart(loadCtx, {
@@ -758,14 +916,14 @@
                     datasets: [{
                         label: 'Load Time (s)',
                         data: performanceData.loadTimes,
-                        backgroundColor: 'rgba(59, 130, 246, 0.7)',
-                        borderColor: 'rgba(59, 130, 246, 1)',
+                        backgroundColor: 'rgba(6, 182, 212, 0.7)',
+                        borderColor: 'rgba(6, 182, 212, 1)',
                         borderWidth: 2
                     }]
                 },
                 options: chartOptions
             });
-
+            
             // Total Time Comparison Chart
             const totalCtx = document.getElementById('totalTimeChart').getContext('2d');
             new Chart(totalCtx, {
@@ -776,15 +934,15 @@
                         {
                             label: 'Response Time (s)',
                             data: performanceData.responseTimes,
-                            borderColor: 'rgba(139, 92, 246, 1)',
-                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
                             tension: 0.4
                         },
                         {
                             label: 'Load Time (s)',
                             data: performanceData.loadTimes,
-                            borderColor: 'rgba(59, 130, 246, 1)',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderColor: 'rgba(6, 182, 212, 1)',
+                            backgroundColor: 'rgba(6, 182, 212, 0.1)',
                             tension: 0.4
                         },
                         {
@@ -802,3 +960,175 @@
     </script>
 </body>
 </html>
+""";
+        
+        // Determine status
+        String statusClass = testPassed ? "status-passed" : "status-failed";
+        String statusText = testPassed ? "✅ Passed" : "❌ Failed";
+        String statusIcon = testPassed ? "✅" : "❌";
+        String statusStepClass = testPassed ? "passed" : "failed";
+        String statusIconFinal = testPassed ? "✅" : "❌";
+        String successRate = arefreshResults.isEmpty() ? "N/A" : 
+            String.format("%.0f%%", (passedCount * 100.0 / (passedCount + failedCount)));
+        
+        // Replace placeholders - IMPORTANT: Replace longer placeholders first to avoid partial matches
+        html = html.replace("TIMESTAMP_PLACEHOLDER", timestamp);
+        html = html.replace("PERF_DATA_JSON", performanceDataJson);
+        html = html.replace("PERF_TABLE_ROWS", stepTableRows);
+        html = html.replace("TEST_RESULT_ROWS", testResultRows);
+        // Replace longer placeholders first
+        html = html.replace("PERF_DATA_TOTAL_SCENARIOS", String.valueOf(totalScenarios));
+        html = html.replace("PERF_DATA_TOTAL_FORMATTED", formatDuration(totalExecutionTime));
+        html = html.replace("PERF_DATA_SUCCESS_RATE", successRate);
+        html = html.replace("PERF_DATA_AVG_RESPONSE", String.format("%.3f", avgResponseTime));
+        html = html.replace("PERF_DATA_AVG_LOAD", String.format("%.3f", avgLoadTime));
+        html = html.replace("PERF_DATA_TOTAL", String.format("%.2f", totalExecutionTime / 1000.0));
+        html = html.replace("PERF_DATA_STEPS", String.valueOf(arefreshMetrics.size()));
+        html = html.replace("PERF_DATA_PASSED", String.valueOf(passedCount));
+        html = html.replace("PERF_DATA_FAILED", String.valueOf(failedCount));
+        html = html.replace("STATUS_BADGE_CLASS", statusClass);
+        html = html.replace("STATUS_TEXT", statusText);
+        html = html.replace("STATUS_STEP_CLASS", statusStepClass);
+        html = html.replace("STATUS_ICON", statusIcon);
+        html = html.replace("STATUS_ICON_FINAL", statusIconFinal);
+        
+        return html;
+    }
+    
+    private static String generatePerformanceDataJson(Map<String, PerformanceTracker.PerformanceMetric> metrics, List<String> executionOrder) {
+        if (metrics.isEmpty()) {
+            return "{ stepLabels: [], responseTimes: [], loadTimes: [], totalTimes: [] }";
+        }
+        
+        StringBuilder json = new StringBuilder();
+        json.append("{\n");
+        json.append("  stepLabels: [");
+        
+        List<String> labels = executionOrder.stream()
+            .map(id -> {
+                PerformanceTracker.PerformanceMetric m = metrics.get(id);
+                return m != null ? "\"Step " + (executionOrder.indexOf(id) + 1) + "\"" : null;
+            })
+            .filter(l -> l != null)
+            .collect(Collectors.toList());
+        json.append(String.join(", ", labels));
+        json.append("],\n");
+        
+        json.append("  responseTimes: [");
+        List<String> responseTimes = executionOrder.stream()
+            .map(id -> {
+                PerformanceTracker.PerformanceMetric m = metrics.get(id);
+                return m != null ? String.format("%.3f", m.responseTime / 1000.0) : "0";
+            })
+            .collect(Collectors.toList());
+        json.append(String.join(", ", responseTimes));
+        json.append("],\n");
+        
+        json.append("  loadTimes: [");
+        List<String> loadTimes = executionOrder.stream()
+            .map(id -> {
+                PerformanceTracker.PerformanceMetric m = metrics.get(id);
+                return m != null ? String.format("%.3f", m.loadTime / 1000.0) : "0";
+            })
+            .collect(Collectors.toList());
+        json.append(String.join(", ", loadTimes));
+        json.append("],\n");
+        
+        json.append("  totalTimes: [");
+        List<String> totalTimes = executionOrder.stream()
+            .map(id -> {
+                PerformanceTracker.PerformanceMetric m = metrics.get(id);
+                return m != null ? String.format("%.3f", m.totalTime / 1000.0) : "0";
+            })
+            .collect(Collectors.toList());
+        json.append(String.join(", ", totalTimes));
+        json.append("]\n");
+        json.append("}");
+        
+        return json.toString();
+    }
+    
+    private static String generateStepTableRows(Map<String, PerformanceTracker.PerformanceMetric> metrics, List<String> executionOrder) {
+        if (metrics.isEmpty()) {
+            return "<tr><td colspan='7' style='text-align: center; padding: 30px; color: #64748b;'>No performance data available. Run tests to see metrics.</td></tr>";
+        }
+        
+        StringBuilder rows = new StringBuilder();
+        int stepNum = 1;
+        
+        for (String stepId : executionOrder) {
+            PerformanceTracker.PerformanceMetric metric = metrics.get(stepId);
+            if (metric == null) continue;
+            
+            String actionClass = "action-" + metric.actionType.toLowerCase();
+            String statusClass = metric.status.equals("PASSED") ? "status-passed" : 
+                                metric.status.equals("FAILED") ? "status-failed" : "status-skipped";
+            String statusIcon = metric.status.equals("PASSED") ? "✅" : 
+                              metric.status.equals("FAILED") ? "❌" : "⏭️";
+            
+            rows.append("<tr>");
+            rows.append("<td><strong>").append(stepNum++).append("</strong></td>");
+            rows.append("<td>").append(escapeHtml(metric.stepName)).append("</td>");
+            rows.append("<td><span class='action-badge ").append(actionClass).append("'>")
+                .append(metric.actionType).append("</span></td>");
+            rows.append("<td class='time-cell response-time'>")
+                .append(String.format("%.3f", metric.responseTime / 1000.0)).append("s</td>");
+            rows.append("<td class='time-cell load-time'>")
+                .append(String.format("%.3f", metric.loadTime / 1000.0)).append("s</td>");
+            rows.append("<td class='time-cell total-time'>")
+                .append(String.format("%.3f", metric.totalTime / 1000.0)).append("s</td>");
+            rows.append("<td><span class='status-badge ").append(statusClass).append("'>")
+                .append(statusIcon).append(" ").append(metric.status).append("</span></td>");
+            rows.append("</tr>");
+        }
+        
+        return rows.toString();
+    }
+    
+    private static String generateTestResultRows(Map<String, TestResultsCollector.TestResult> results) {
+        if (results.isEmpty()) {
+            return "<tr><td colspan='4' style='text-align: center; padding: 30px; color: #64748b;'>No test results available. Run tests to see results.</td></tr>";
+        }
+        
+        StringBuilder rows = new StringBuilder();
+        
+        for (TestResultsCollector.TestResult result : results.values()) {
+            String statusClass = result.status.equals("PASSED") ? "status-passed" : 
+                                result.status.equals("FAILED") ? "status-failed" : "status-skipped";
+            String statusIcon = result.status.equals("PASSED") ? "✅" : 
+                              result.status.equals("FAILED") ? "❌" : "⏭️";
+            
+            rows.append("<tr>");
+            rows.append("<td><strong>").append(escapeHtml(result.testName)).append("</strong></td>");
+            rows.append("<td><span class='status-badge ").append(statusClass).append("'>")
+                .append(statusIcon).append(" ").append(result.status).append("</span></td>");
+            rows.append("<td>").append(String.format("%.3f", result.duration / 1000.0)).append("s</td>");
+            rows.append("<td>").append(escapeHtml(result.details)).append("</td>");
+            rows.append("</tr>");
+        }
+        
+        return rows.toString();
+    }
+    
+    private static String formatDuration(long milliseconds) {
+        if (milliseconds < 1000) {
+            return milliseconds + "ms";
+        } else if (milliseconds < 60000) {
+            return String.format("%.2fs", milliseconds / 1000.0);
+        } else {
+            long minutes = milliseconds / 60000;
+            long seconds = (milliseconds % 60000) / 1000;
+            return minutes + "m " + seconds + "s";
+        }
+    }
+    
+    private static String escapeHtml(String text) {
+        if (text == null) return "";
+        return text.replace("&", "&amp;")
+                   .replace("<", "&lt;")
+                   .replace(">", "&gt;")
+                   .replace("\"", "&quot;")
+                   .replace("'", "&#39;");
+    }
+}
+
